@@ -11,7 +11,7 @@ const content = {
   en: {
     heroTitle: "Who We Are",
     heroSubtitle:
-      "Adibayu Group is a strategic holding company driving integrated growth across Manufacturing, Distribution, Retail, and digital acceleration initiatives.",
+      "The company was established under the name PT. Adibayu Gajah Semakmur on February 5, 2024. It is a holding company that oversees three business areas, namely manufacturing, distribution, and retail. The company is committed to growing together with all of its entities to shape the nation's future generations.",
     sectors: ["Manufacturing", "Distribution", "Retail", "Digital Growth"],
     snapshotTitle: "About Adibayu Group",
     snapshotBody:
@@ -26,35 +26,35 @@ const content = {
       "Our role is to strengthen each enterprise through shared governance, strategy, and operational excellence.",
     visionTitle: "Vision",
     visionBody:
-      "To build a high-performing, trusted holding ecosystem that advances sustainable growth across Indonesia’s real economy sectors.",
+      "To Be World Wide Company In Every Category Business With The Barokah Way.",
     missionTitle: "Mission",
     missionPoints: [
-      "Set clear strategic direction and measurable governance standards.",
-      "Enable operational integration across portfolio companies.",
-      "Develop institutional capabilities for long-term competitiveness.",
-      "Promote responsible growth through disciplined execution.",
+      "Create a better future every day.",
+      "Providing a sense of comfort and a good quality of life through brands and services to consumer.",
+      "Inspire people to take small steps that can bring positive change to the world.",
+      "Always innovate in business with the aim of enabling us to grow faster and still pay attention to the impact on environmental sustainability.",
     ],
     valuesTitle: "OUR VALUES",
     values: [
       {
-        title: "Integrity",
-        desc: "We make transparent decisions anchored in ethical conduct.",
+        title: "Family",
+        desc: "We build trust, care, and a sense of belonging across every team and entity.",
       },
       {
-        title: "Accountability",
-        desc: "We commit to outcomes and take ownership of execution quality.",
+        title: "Achievement",
+        desc: "We pursue measurable results with discipline, consistency, and strong execution.",
       },
       {
-        title: "Excellence",
-        desc: "We continuously raise standards across strategy and operations.",
+        title: "Spirituality",
+        desc: "We uphold integrity and purpose by grounding our actions in meaningful values.",
       },
       {
-        title: "Collaboration",
-        desc: "We unlock value through coordinated capabilities across entities.",
+        title: "Teamwork",
+        desc: "We collaborate across functions and companies to create stronger collective impact.",
       },
       {
-        title: "Long-term Thinking",
-        desc: "We prioritize durable value over short-term optics.",
+        title: "F.A.S.T",
+        desc: "Family, Achievement, Spirituality, and Teamwork shape how we decide, execute, and grow sustainably.",
       },
     ],
     leadershipTitle: "Leadership",
@@ -70,7 +70,7 @@ const content = {
   id: {
     heroTitle: "Tentang Kami",
     heroSubtitle:
-      "Adibayu Group adalah strategic holding company yang mendorong pertumbuhan terintegrasi di sektor Manufaktur, Distribusi, Ritel, dan akselerasi digital.",
+      "Perseroan didirikan dengan nama PT. Adibayu Gajah Semakmur pada tanggal 5 Februari 2024. Menjadi sebuah holding company yang menaungi tiga bidang perusahaan yakni manufaktur, distribusi, dan retail. Perusahaan berkomitmen untuk berkembang bersama seluruh entitas perusahaan untuk membentuk generasi bangsa.",
     sectors: ["Manufaktur", "Distribusi", "Ritel", "Pertumbuhan Digital"],
     snapshotTitle: "Tentang Adibayu Group",
     snapshotBody:
@@ -85,35 +85,35 @@ const content = {
       "Peran kami adalah memperkuat setiap entitas melalui tata kelola bersama, strategi, dan keunggulan operasional.",
     visionTitle: "Visi",
     visionBody:
-      "Menjadi ekosistem holding berkinerja tinggi dan terpercaya yang mendorong pertumbuhan berkelanjutan pada sektor ekonomi riil Indonesia.",
+      "Menjadi Perusahaan Global di Setiap Bidang Usaha dengan Cara Barokah.",
     missionTitle: "Misi",
     missionPoints: [
-      "Menetapkan arah strategis yang jelas dan standar tata kelola yang terukur.",
-      "Mendorong integrasi operasional antar perusahaan portofolio.",
-      "Membangun kapabilitas institusional untuk daya saing jangka panjang.",
-      "Mendorong pertumbuhan yang bertanggung jawab melalui disiplin eksekusi.",
+      "Ciptakan masa depan yang lebih baik setiap hari.",
+      "Memberikan rasa nyaman dan kualitas hidup yang baik melalui merek dan layanan kepada konsumen.",
+      "Menginspirasi orang untuk mengambil langkah kecil yang dapat membawa perubahan positif bagi dunia.",
+      "Selalu berinovasi dalam bisnis dengan tujuan agar kita dapat tumbuh lebih cepat sambil tetap memperhatikan dampak terhadap keberlanjutan lingkungan.",
     ],
     valuesTitle: "NILAI KAMI",
     values: [
       {
-        title: "Integritas",
-        desc: "Kami mengambil keputusan yang transparan dan berlandaskan etika.",
+        title: "Family",
+        desc: "Kami membangun kepercayaan, kepedulian, dan rasa memiliki di setiap tim dan entitas.",
       },
       {
-        title: "Akuntabilitas",
-        desc: "Kami berkomitmen pada hasil dan bertanggung jawab atas kualitas eksekusi.",
+        title: "Achievement",
+        desc: "Kami mengejar hasil yang terukur dengan disiplin, konsistensi, dan eksekusi yang kuat.",
       },
       {
-        title: "Keunggulan",
-        desc: "Kami terus meningkatkan standar strategi dan operasi.",
+        title: "Spirituality",
+        desc: "Kami menjaga integritas dan tujuan dengan menautkan setiap tindakan pada nilai yang bermakna.",
       },
       {
-        title: "Kolaborasi",
-        desc: "Kami membuka nilai lewat koordinasi kapabilitas antar entitas.",
+        title: "Teamwork",
+        desc: "Kami berkolaborasi lintas fungsi dan perusahaan untuk menciptakan dampak kolektif yang lebih kuat.",
       },
       {
-        title: "Berpikir Jangka Panjang",
-        desc: "Kami mengutamakan nilai berkelanjutan dibanding hasil sesaat.",
+        title: "F.A.S.T",
+        desc: "Family, Achievement, Spirituality, dan Teamwork menjadi cara kami mengambil keputusan, mengeksekusi, dan bertumbuh berkelanjutan.",
       },
     ],
     leadershipTitle: "Kepemimpinan",
