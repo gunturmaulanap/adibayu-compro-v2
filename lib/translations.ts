@@ -330,7 +330,7 @@ export const copy: Record<Locale, Copy> = {
       businesses: "Bisnis",
       businessItems: ["Manufaktur", "Distribusi", "Ritel"],
       exploreValueChain: "Jelajahi Rantai Nilai",
-      whoWeAre: "Tentang Kami",
+      whoWeAre: "Tentang",
       whoItems: {
         about: "Tentang Adibayu Group",
         visionMission: "Visi & Misi",
