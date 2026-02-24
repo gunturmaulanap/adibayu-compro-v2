@@ -254,7 +254,7 @@ export default function Footer({ isDarkMode = false, locale }: FooterProps) {
                 }`}
               >
                 <Phone className="w-4 h-4" />
-                <span>+62-811-2700-9505</span>
+                <span>+6281127009500</span>
               </a>
             </div>
           </div>
