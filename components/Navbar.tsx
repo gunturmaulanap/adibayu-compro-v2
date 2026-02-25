@@ -179,62 +179,8 @@ export default function Navbar({
   const aboutLabel = locale === "id" ? "Tentang Kami" : "About Us";
   const careerLabel = locale === "id" ? "Karir" : "Career";
 
-  const handleToggleLocaleWithDebug = (source: "desktop" | "mobile") => {
-    const getLikelyActiveSectionId = (): string | null => {
-      const sectionIds = [
-        "value-chain",
-        "our-companies",
-        "latest-insights",
-        "impact",
-        "find-us",
-      ];
-
-      const viewportProbeY = window.innerHeight * 0.35;
-      let bestId: string | null = null;
-      let bestScore = Number.POSITIVE_INFINITY;
-
-      sectionIds.forEach((id) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-
-        const rect = el.getBoundingClientRect();
-        const score = Math.abs(rect.top - viewportProbeY);
-        if (score < bestScore) {
-          bestScore = score;
-          bestId = id;
-        }
-      });
-
-      return bestId;
-    };
-
-    const restoreViewportAfterToggle = (
-      activeSectionId: string | null,
-      scrollBefore: number,
-    ) => {
-      const navOffset = window.innerWidth >= 1024 ? 120 : 92;
-
-      const runRestore = (label: string) => {
-        if (activeSectionId) {
-          const section = document.getElementById(activeSectionId);
-          if (section) {
-            const targetTop =
-              section.getBoundingClientRect().top + window.scrollY - navOffset;
-            window.scrollTo({ top: Math.max(0, targetTop), behavior: "auto" });
-
-            return;
-          }
-        }
-
-        window.scrollTo({ top: scrollBefore, behavior: "auto" });
-      };
-
-      window.requestAnimationFrame(() => runRestore("raf"));
-      window.setTimeout(() => runRestore("200ms"), 200);
-    };
-
+  const handleToggleLocale = (source: "desktop" | "mobile") => {
     const scrollBefore = window.scrollY;
-    const activeSectionId = getLikelyActiveSectionId();
 
     if (source === "mobile") {
       setIsMobileMenuOpen(false);
@@ -242,7 +188,12 @@ export default function Navbar({
 
     toggleLocale();
 
-    restoreViewportAfterToggle(activeSectionId, scrollBefore);
+    const restoreScroll = () => {
+      window.scrollTo({ top: scrollBefore, behavior: "auto" });
+    };
+
+    window.requestAnimationFrame(restoreScroll);
+    window.setTimeout(restoreScroll, 180);
   };
 
   return (
@@ -382,7 +333,7 @@ export default function Navbar({
         >
           <button
             type="button"
-            onClick={() => handleToggleLocaleWithDebug("desktop")}
+            onClick={() => handleToggleLocale("desktop")}
             className="flex items-center gap-1.5 cursor-pointer hover:opacity-70 transition-opacity"
             aria-label="Toggle language"
           >
@@ -522,7 +473,7 @@ export default function Navbar({
                   role="switch"
                   aria-label="Toggle language"
                   aria-checked={locale === "id"}
-                  onClick={() => handleToggleLocaleWithDebug("mobile")}
+                  onClick={() => handleToggleLocale("mobile")}
                   className={`relative inline-flex h-7 w-14 items-center rounded-full border transition-colors duration-300 ${mobileToggleTrackClasses}`}
                 >
                   <span
