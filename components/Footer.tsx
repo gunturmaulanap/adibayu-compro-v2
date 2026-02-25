@@ -86,7 +86,7 @@ function LinkColumn({
 
 export default function Footer({ isDarkMode = false, locale }: FooterProps) {
   const currentYear = new Date().getFullYear();
-  const t = copy[locale].home.footer;
+  const t = copy[locale]?.home?.footer ?? copy.en.home.footer;
 
   const footerLinks = {
     businesses: [

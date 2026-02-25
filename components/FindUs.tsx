@@ -1,4 +1,8 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { MapPin, Mail, Phone } from "lucide-react";
+import { useEffect } from "react";
 import type { Locale } from "@/lib/i18n";
 import { copy } from "@/lib/translations";
 
@@ -7,8 +11,157 @@ type FindUsProps = {
   locale: Locale;
 };
 
+const findUsVariants = {
+  sectionHeader: {
+    hidden: {
+      opacity: 0,
+      y: 35,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 85,
+        damping: 20,
+        mass: 1,
+      },
+    },
+  },
+  subtitle: {
+    hidden: {
+      opacity: 0,
+      y: 28,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 80,
+        damping: 19,
+        mass: 0.95,
+        delay: 0.1,
+      },
+    },
+  },
+  leftMap: {
+    hidden: {
+      opacity: 0,
+      scale: 1.05,
+      x: -35,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 75,
+        damping: 22,
+        mass: 1.1,
+        delay: 0.2,
+      },
+    },
+  },
+  rightCard: {
+    hidden: {
+      opacity: 0,
+      x: 35,
+      y: 25,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 80,
+        damping: 20,
+        mass: 1,
+        staggerChildren: 0.08,
+        delayChildren: 0.3,
+      },
+    },
+  },
+  contactItem: (index: number) => ({
+    hidden: {
+      opacity: 0,
+      x: 20,
+      y: 15,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 90,
+        damping: 18,
+        mass: 0.85,
+        delay: index * 0.1,
+      },
+    },
+  }),
+  icon: {
+    hidden: {
+      scale: 0.7,
+      rotate: -8,
+      opacity: 0,
+    },
+    visible: {
+      scale: 1,
+      rotate: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 160,
+        damping: 16,
+        mass: 0.5,
+        delay: 0.15,
+      },
+    },
+  },
+  ctaGroup: {
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 95,
+        damping: 19,
+        mass: 0.9,
+        delay: 0.75,
+      },
+    },
+  },
+  ctaButton: (index: number) => ({
+    hidden: {
+      opacity: 0,
+      scale: 0.92,
+      y: 15,
+    },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 140,
+        damping: 17,
+        mass: 0.75,
+        delay: index * 0.08,
+      },
+    },
+  }),
+};
+
 export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
-  const t = copy[locale].home.findUs;
+  const t = copy[locale]?.home?.findUs ?? copy.en.home.findUs;
 
   const mapEmbedUrl =
     "https://www.google.com/maps?q=Graha%20Pratama%20Building%20Level%2019,%20Jl.%20Letjen%20M.T.%20Haryono%20No.KAV15,%20Tebet,%20Jakarta%2012810&output=embed";
@@ -17,7 +170,7 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
     "https://maps.google.com/?q=Graha%20Pratama%20Building%20Level%2019,%20Jl.%20Letjen%20M.T.%20Haryono%20No.KAV15,%20Jakarta";
 
   const email = "office@adibayu.com";
-  const phone = "+62-811-2700-9505";
+  const phone = "+6281127009500";
 
   return (
     <section
@@ -27,33 +180,53 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
       }`}
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-        {/* Header */}
-        <div className="mb-12 md:mb-16">
-          <h2
+        <motion.div
+          className="mb-12 md:mb-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
+        >
+          <motion.h2
             className={`text-4xl md:text-5xl font-bold tracking-tight ${
               isDarkMode ? "text-white" : "text-gray-900"
             }`}
+            variants={findUsVariants.sectionHeader}
           >
             {t.title}
-          </h2>
-          <p
+          </motion.h2>
+          <motion.p
             className={`mt-4 text-base md:text-lg leading-relaxed max-w-2xl ${
               isDarkMode ? "text-gray-400" : "text-gray-600"
             }`}
+            variants={findUsVariants.subtitle}
           >
             {t.subtitle}
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[1.7fr_1fr] md:gap-5 lg:grid-cols-[2.1fr_1fr] lg:gap-8">
-          {/* Map */}
-          <div className="order-1">
-            <div
+        <motion.div
+          className="grid grid-cols-1 items-start gap-6 md:grid-cols-[1.7fr_1fr] md:gap-5 lg:grid-cols-[2.1fr_1fr] lg:gap-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15, margin: "0px 0px -50px 0px" }}
+        >
+          <motion.div className="order-1" variants={findUsVariants.leftMap}>
+            <motion.div
               className={`h-[360px] w-full overflow-hidden rounded-2xl border shadow-sm md:h-[400px] lg:h-[420px] ${
                 isDarkMode
                   ? "border-neutral-800 bg-neutral-900"
                   : "border-neutral-200 bg-white"
               }`}
+              whileHover={{
+                boxShadow: isDarkMode
+                  ? "0 20px 40px -12px rgba(0, 0, 0, 0.4)"
+                  : "0 20px 40px -12px rgba(0, 0, 0, 0.1)",
+                transition: {
+                  type: "spring",
+                  stiffness: 150,
+                  damping: 20,
+                },
+              }}
             >
               <iframe
                 src={mapEmbedUrl}
@@ -66,11 +239,10 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
                 title="Adibayu Group Location"
                 className="w-full h-full"
               />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          {/* Contact Card */}
-          <div className="order-2">
+          <motion.div className="order-2" variants={findUsVariants.rightCard}>
             <div
               className={`rounded-3xl border p-5 shadow-sm md:p-6 lg:p-7 ${
                 isDarkMode
@@ -79,12 +251,18 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
               }`}
             >
               <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <Mail
-                    className={`mt-0.5 h-4 w-4 ${
-                      isDarkMode ? "text-neutral-400" : "text-neutral-500"
-                    }`}
-                  />
+                <motion.div
+                  custom={0}
+                  variants={findUsVariants.contactItem(0)}
+                  className="flex items-start gap-3"
+                >
+                  <motion.div variants={findUsVariants.icon}>
+                    <Mail
+                      className={`mt-0.5 h-4 w-4 ${
+                        isDarkMode ? "text-neutral-400" : "text-neutral-500"
+                      }`}
+                    />
+                  </motion.div>
                   <div>
                     <p
                       className={`text-[11px] font-semibold uppercase tracking-[0.2em] ${
@@ -93,29 +271,43 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
                     >
                       EMAIL
                     </p>
-                    <a
+                    <motion.a
                       href={`mailto:${email}`}
                       className={`mt-1 inline-block text-sm font-semibold ${
                         isDarkMode
                           ? "text-neutral-100 hover:text-white"
                           : "text-neutral-900 hover:text-black"
                       } transition-colors`}
+                      whileHover={{
+                        x: 3,
+                        transition: {
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 18,
+                        },
+                      }}
                     >
                       {email}
-                    </a>
+                    </motion.a>
                   </div>
-                </div>
+                </motion.div>
 
                 <div
                   className={`h-px ${isDarkMode ? "bg-neutral-800" : "bg-neutral-200"}`}
                 />
 
-                <div className="flex items-start gap-3">
-                  <Phone
-                    className={`mt-0.5 h-4 w-4 ${
-                      isDarkMode ? "text-neutral-400" : "text-neutral-500"
-                    }`}
-                  />
+                <motion.div
+                  custom={1}
+                  variants={findUsVariants.contactItem(1)}
+                  className="flex items-start gap-3"
+                >
+                  <motion.div variants={findUsVariants.icon}>
+                    <Phone
+                      className={`mt-0.5 h-4 w-4 ${
+                        isDarkMode ? "text-neutral-400" : "text-neutral-500"
+                      }`}
+                    />
+                  </motion.div>
                   <div>
                     <p
                       className={`text-[11px] font-semibold uppercase tracking-[0.2em] ${
@@ -124,29 +316,43 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
                     >
                       PHONE
                     </p>
-                    <a
+                    <motion.a
                       href={`tel:${phone.replace(/-/g, "")}`}
                       className={`mt-1 inline-block text-sm font-semibold ${
                         isDarkMode
                           ? "text-neutral-100 hover:text-white"
                           : "text-neutral-900 hover:text-black"
                       } transition-colors`}
+                      whileHover={{
+                        x: 3,
+                        transition: {
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 18,
+                        },
+                      }}
                     >
                       {phone}
-                    </a>
+                    </motion.a>
                   </div>
-                </div>
+                </motion.div>
 
                 <div
                   className={`h-px ${isDarkMode ? "bg-neutral-800" : "bg-neutral-200"}`}
                 />
 
-                <div className="flex items-start gap-3">
-                  <MapPin
-                    className={`mt-0.5 h-4 w-4 ${
-                      isDarkMode ? "text-neutral-400" : "text-neutral-500"
-                    }`}
-                  />
+                <motion.div
+                  custom={2}
+                  variants={findUsVariants.contactItem(2)}
+                  className="flex items-start gap-3"
+                >
+                  <motion.div variants={findUsVariants.icon}>
+                    <MapPin
+                      className={`mt-0.5 h-4 w-4 ${
+                        isDarkMode ? "text-neutral-400" : "text-neutral-500"
+                      }`}
+                    />
+                  </motion.div>
                   <div>
                     <p
                       className={`text-[11px] font-semibold uppercase tracking-[0.2em] ${
@@ -166,39 +372,71 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
                       <div>DKI Jakarta 12810</div>
                     </address>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
-              <div className="mt-6 space-y-2.5">
-                <a
-                  href="https://maps.google.com/?q=Graha%20Pratama%20Building%20Level%2019,%20Jl.%20Letjen%20M.T.%20Haryono%20No.KAV15,%20Jakarta"
+              <motion.div
+                className="mt-6 space-y-2.5"
+                variants={findUsVariants.ctaGroup}
+              >
+                <motion.a
+                  custom={0}
+                  href={mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5 ${
+                  variants={findUsVariants.ctaButton(0)}
+                  className={`inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold transition-all duration-200 ${
                     isDarkMode
                       ? "bg-neutral-100 text-neutral-900 hover:bg-white"
                       : "bg-neutral-900 text-white hover:bg-black"
                   }`}
+                  whileHover={{
+                    y: -3,
+                    transition: {
+                      type: "spring",
+                      stiffness: 250,
+                      damping: 18,
+                    },
+                  }}
+                  whileTap={{
+                    scale: 0.97,
+                  }}
                 >
                   <MapPin className="w-4 h-4" />
                   Open in Google Maps
-                </a>
+                </motion.a>
 
-                <a
-                  href="mailto:office@adibayu.com"
-                  className={`inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl border px-5 text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5 ${
+                <motion.a
+                  custom={1}
+                  href={`mailto:${email}`}
+                  variants={findUsVariants.ctaButton(1)}
+                  className={`inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl border px-5 text-sm font-semibold transition-all duration-200 ${
                     isDarkMode
                       ? "border-neutral-700 text-neutral-100 hover:bg-neutral-800"
                       : "border-neutral-300 text-neutral-900 hover:bg-neutral-50"
                   }`}
+                  whileHover={{
+                    y: -3,
+                    borderColor: isDarkMode
+                      ? "rgba(255,255,255,0.3)"
+                      : "rgba(0,0,0,0.3)",
+                    transition: {
+                      type: "spring",
+                      stiffness: 250,
+                      damping: 18,
+                    },
+                  }}
+                  whileTap={{
+                    scale: 0.97,
+                  }}
                 >
                   <Mail className="w-4 h-4" />
                   Send Email
-                </a>
-              </div>
+                </motion.a>
+              </motion.div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

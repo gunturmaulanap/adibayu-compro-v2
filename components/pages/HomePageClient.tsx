@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { LayoutGroup } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ValueChain from "@/components/ValueChain";
@@ -45,14 +46,17 @@ export default function HomePageClient() {
         onToggleTheme={() => setIsDarkMode((prev) => !prev)}
       />
 
-      <Hero isDarkMode={isDarkMode} locale={locale} />
-      <ValueChain isDarkMode={isDarkMode} locale={locale} />
-      <WhoWeEmpower isDarkMode={isDarkMode} locale={locale} />
-      <BrandsEcosystem isDarkMode={isDarkMode} locale={locale} />
-      <LatestInsights isDarkMode={isDarkMode} locale={locale} />
-      <WhyWeExist isDarkMode={isDarkMode} locale={locale} />
-      <Recognition isDarkMode={isDarkMode} locale={locale} />
-      <FindUs isDarkMode={isDarkMode} locale={locale} />
+      {/* LayoutGroup untuk sinkronisasi animasi antar section */}
+      <LayoutGroup>
+        <Hero isDarkMode={isDarkMode} locale={locale} />
+        <ValueChain isDarkMode={isDarkMode} locale={locale} />
+        <WhoWeEmpower isDarkMode={isDarkMode} locale={locale} />
+        <BrandsEcosystem isDarkMode={isDarkMode} locale={locale} />
+        <LatestInsights isDarkMode={isDarkMode} locale={locale} />
+        <WhyWeExist isDarkMode={isDarkMode} locale={locale} />
+        <Recognition isDarkMode={isDarkMode} locale={locale} />
+        <FindUs isDarkMode={isDarkMode} locale={locale} />
+      </LayoutGroup>
 
       <Footer isDarkMode={isDarkMode} locale={locale} />
     </main>

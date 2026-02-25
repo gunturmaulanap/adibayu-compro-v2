@@ -119,6 +119,44 @@ type Copy = {
       bio: string;
     }[];
   };
+  career: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    categories: {
+      all: string;
+      development: string;
+      design: string;
+      marketing: string;
+      customerService: string;
+      operations: string;
+      finance: string;
+      management: string;
+    };
+    jobs: {
+      title1: string;
+      description1: string;
+      title2: string;
+      description2: string;
+      title3: string;
+      description3: string;
+      title4: string;
+      description4: string;
+      title5: string;
+      description5: string;
+      title6: string;
+      description6: string;
+      title7: string;
+      description7: string;
+    };
+    tags: {
+      remote: string;
+      fullTime: string;
+      hybrid: string;
+      onSite: string;
+    };
+    apply: string;
+  };
 };
 
 export const copy: Record<Locale, Copy> = {
@@ -133,7 +171,7 @@ export const copy: Record<Locale, Copy> = {
         visionMission: "Vision & Mission",
         leadership: "Leadership",
       },
-      insights: "Insights",
+      insights: "News",
       impact: "Impact",
       governance: "Governance",
       contact: "Contact",
@@ -188,9 +226,10 @@ export const copy: Record<Locale, Copy> = {
       },
       brandsTitle: "Brands Within Our Ecosystem",
       insights: {
-        title: "Insights",
-        subtitle: "Strategic perspectives shaping our industries.",
-        viewAll: "View All Insights",
+        title: "News & Updates",
+        subtitle:
+          "Latest developments and strategic updates from our ecosystem.",
+        viewAll: "View All News & Updates",
       },
       whyWeExist: {
         title: "Why We Exist",
@@ -217,11 +256,11 @@ export const copy: Record<Locale, Copy> = {
         ],
       },
       recognition: {
-        title: "Recognition",
+        title: "Rewards & Recognition",
         subtitle:
           "External validation of our commitment to excellence across all business units.",
         footer:
-          "Certifications and awards are independently verified by respective issuing organizations. Recognition reflects achievement across Adibayu Group business ecosystem.",
+          "Certifications and awards are independently verified by respective issuing organizations. Rewards reflects achievement across Adibayu Group business ecosystem.",
       },
       findUs: {
         title: "Find Us",
@@ -236,10 +275,10 @@ export const copy: Record<Locale, Copy> = {
       footer: {
         businesses: "Businesses",
         whoWeAre: "Who We Are",
-        impactInsights: "Impact & Insights",
+        impactInsights: "Impact & News",
         legal: "Legal",
         summary:
-          "Adibayu Group is an integrated holding company operating across manufacturing, distribution, and retail sectors—building sustainable long-term value for society.",
+          "The company was established under the name PT. Adibayu Gajah Semakmur on February 5, 2024. It is a holding company that oversees three business areas, namely manufacturing, distribution, and retail. The company is committed to growing together with all of its entities to shape the nation's future generations.",
         rights: "Adibayu Group. All rights reserved.",
         businessLinks: [
           "Manufacturing",
@@ -253,7 +292,12 @@ export const copy: Record<Locale, Copy> = {
           "Leadership",
           "Governance",
         ],
-        impactLinks: ["Why We Exist", "Insights", "Partnerships", "Careers"],
+        impactLinks: [
+          "Why We Exist",
+          "News & Updates",
+          "Partnerships",
+          "Careers",
+        ],
         legalLinks: ["Privacy Policy", "Terms", "Cookies Policy"],
       },
     },
@@ -324,6 +368,52 @@ export const copy: Record<Locale, Copy> = {
         },
       ],
     },
+    career: {
+      badge: "We're hiring!",
+      title: "Be part of our mission",
+      subtitle:
+        "Join a team focused on building long-term impact across industries. We value ownership, craftsmanship, and purposeful collaboration.",
+      categories: {
+        all: "View all",
+        development: "Development",
+        design: "Design",
+        marketing: "Marketing",
+        customerService: "Customer Service",
+        operations: "Operations",
+        finance: "Finance",
+        management: "Management",
+      },
+      jobs: {
+        title1: "Senior Frontend Engineer",
+        description1:
+          "Build performant user interfaces across our digital platforms with strong product and design collaboration.",
+        title2: "Product Designer",
+        description2:
+          "Design intuitive flows and polished interfaces that translate business goals into meaningful experiences.",
+        title3: "Digital Marketing Strategist",
+        description3:
+          "Drive multi-channel campaigns, optimize performance metrics, and elevate brand visibility.",
+        title4: "Customer Success Specialist",
+        description4:
+          "Support enterprise clients, resolve product issues, and ensure long-term customer satisfaction.",
+        title5: "Operations Coordinator",
+        description5:
+          "Improve day-to-day execution quality through process excellence and cross-team coordination.",
+        title6: "Financial Planning Analyst",
+        description6:
+          "Own budgeting cycles, scenario planning, and strategic financial analysis for sustainable growth.",
+        title7: "Engineering Manager",
+        description7:
+          "Lead engineering squads, coach talent, and drive delivery excellence for mission-critical initiatives.",
+      },
+      tags: {
+        remote: "100% remote",
+        fullTime: "Full-time",
+        hybrid: "Hybrid",
+        onSite: "On-site",
+      },
+      apply: "Apply",
+    },
   },
   id: {
     navbar: {
@@ -336,7 +426,7 @@ export const copy: Record<Locale, Copy> = {
         visionMission: "Visi & Misi",
         leadership: "Kepemimpinan",
       },
-      insights: "Artikel",
+      insights: "Berita ",
       impact: "Dampak",
       governance: "Tata Kelola",
       contact: "Kontak",
@@ -388,9 +478,10 @@ export const copy: Record<Locale, Copy> = {
       },
       brandsTitle: "Merek dalam Ekosistem Kami",
       insights: {
-        title: "Artikel",
-        subtitle: "Perspektif strategis yang membentuk industri kami.",
-        viewAll: "Lihat Semua Artikel",
+        title: "Berita & Pembaruan",
+        subtitle:
+          "Perkembangan terbaru dan pembaruan strategis dari ekosistem kami.",
+        viewAll: "Lihat Semua Berita & Pembaruan",
       },
       whyWeExist: {
         title: "Alasan Kami Hadir",
@@ -417,11 +508,11 @@ export const copy: Record<Locale, Copy> = {
         ],
       },
       recognition: {
-        title: "Pengakuan",
+        title: "Penghargaan",
         subtitle:
           "Validasi eksternal atas komitmen kami terhadap keunggulan di seluruh unit bisnis.",
         footer:
-          "Sertifikasi dan penghargaan diverifikasi secara independen oleh lembaga penerbit terkait. Pengakuan ini mencerminkan pencapaian di seluruh ekosistem bisnis Adibayu Group.",
+          "Sertifikasi dan penghargaan diverifikasi secara independen oleh lembaga penerbit terkait. Penghargaan ini mencerminkan pencapaian di seluruh ekosistem bisnis Adibayu Group.",
       },
       findUs: {
         title: "Temukan Kami",
@@ -436,10 +527,10 @@ export const copy: Record<Locale, Copy> = {
       footer: {
         businesses: "Bisnis",
         whoWeAre: "Tentang Kami",
-        impactInsights: "Dampak & Artikel",
+        impactInsights: "Dampak & Berita",
         legal: "Legal",
         summary:
-          "Adibayu Group adalah perusahaan holding terintegrasi yang bergerak di sektor manufaktur, distribusi, dan ritel—membangun nilai jangka panjang yang berkelanjutan bagi masyarakat.",
+          "Perseroan didirikan dengan nama PT. Adibayu Gajah Semakmur pada tanggal 5 Februari 2024. Menjadi sebuah holding company yang menaungi tiga bidang perusahaan yakni manufaktur, distribusi, dan retail. Perusahaan berkomitmen untuk berkembang bersama seluruh entitas perusahaan untuk membentuk generasi bangsa.",
         rights: "Adibayu Group. Seluruh hak cipta dilindungi.",
         businessLinks: ["Manufaktur", "Distribusi", "Ritel", "Ekosistem Nilai"],
         whoLinks: [
@@ -518,6 +609,52 @@ export const copy: Record<Locale, Copy> = {
           bio: "Memastikan keselarasan operasional dan efisiensi di seluruh entitas manufaktur, distribusi, dan ritel.",
         },
       ],
+    },
+    career: {
+      badge: "Kami sedang merekrut!",
+      title: "Jadilah bagian dari misi kami",
+      subtitle:
+        "Bergabunglah dengan tim yang fokus membangun dampak jangka panjang lintas industri. Kami menghargai kepemilikan, keahlian, dan kolaborasi yang bermakna.",
+      categories: {
+        all: "Lihat semua",
+        development: "Pengembangan",
+        design: "Desain",
+        marketing: "Pemasaran",
+        customerService: "Layanan Pelanggan",
+        operations: "Operasional",
+        finance: "Keuangan",
+        management: "Manajemen",
+      },
+      jobs: {
+        title1: "Senior Frontend Engineer",
+        description1:
+          "Bangun antarmuka pengguna yang berkinerja tinggi di berbagai platform digital kami dengan kolaborasi produk dan desain yang kuat.",
+        title2: "Product Designer",
+        description2:
+          "Rancang alur yang intuitif dan antarmuka yang polished yang mengubah tujuan bisnis menjadi pengalaman yang bermakna.",
+        title3: "Digital Marketing Strategist",
+        description3:
+          "Kampanyekan multi-channel, optimalkan metrik performa, dan tingkatkan visibilitas brand.",
+        title4: "Customer Success Specialist",
+        description4:
+          "Dukung klien enterprise, selesaikan masalah produk, dan pastikan kepuasan pelanggan jangka panjang.",
+        title5: "Operations Coordinator",
+        description5:
+          "Tingkatkan kualitas eksekusi sehari-hari melalui keunggulan proses dan koordinasi lintas tim.",
+        title6: "Financial Planning Analyst",
+        description6:
+          "Kelola siklus anggaran, perencanaan skenario, dan analisis keuangan strategis untuk pertumbuhan berkelanjutan.",
+        title7: "Engineering Manager",
+        description7:
+          "Pimpin tim engineering, bimbing talenta, dan dorong keunggulan pengiriman untuk inisiatif yang krusial.",
+      },
+      tags: {
+        remote: "100% remote",
+        fullTime: "Penuh waktu",
+        hybrid: "Hybrid",
+        onSite: "Di kantor",
+      },
+      apply: "Lamar",
     },
   },
 };

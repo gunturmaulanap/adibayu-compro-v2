@@ -10,7 +10,7 @@ import {
   Building2,
   Layers3,
   Newspaper,
-  Sparkles,
+  Briefcase,
   ShieldCheck,
   Mail,
 } from "lucide-react";
@@ -37,7 +37,7 @@ export default function Navbar({
   const pathname = usePathname();
   const router = useRouter();
   const { locale, toggleLocale } = useLocale();
-  const t = copy[locale].navbar;
+  const t = copy[locale]?.navbar ?? copy.en.navbar;
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -79,10 +79,18 @@ export default function Navbar({
       return;
     }
 
+    const targetHash = `#${sectionId}`;
+    const nextUrl = `/${targetHash}`;
+
+    if (window.location.hash !== targetHash) {
+      window.history.pushState(null, "", nextUrl);
+    }
+
     const didScroll = scrollToSection(sectionId);
     if (!didScroll) {
       router.push(`/#${sectionId}`);
     }
+
     setIsMobileMenuOpen(false);
   };
 
@@ -169,6 +177,73 @@ export default function Navbar({
     locale === "id" ? "Perusahaan Kami" : "Our Companies";
 
   const aboutLabel = locale === "id" ? "Tentang Kami" : "About Us";
+  const careerLabel = locale === "id" ? "Karir" : "Career";
+
+  const handleToggleLocaleWithDebug = (source: "desktop" | "mobile") => {
+    const getLikelyActiveSectionId = (): string | null => {
+      const sectionIds = [
+        "value-chain",
+        "our-companies",
+        "latest-insights",
+        "impact",
+        "find-us",
+      ];
+
+      const viewportProbeY = window.innerHeight * 0.35;
+      let bestId: string | null = null;
+      let bestScore = Number.POSITIVE_INFINITY;
+
+      sectionIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        const rect = el.getBoundingClientRect();
+        const score = Math.abs(rect.top - viewportProbeY);
+        if (score < bestScore) {
+          bestScore = score;
+          bestId = id;
+        }
+      });
+
+      return bestId;
+    };
+
+    const restoreViewportAfterToggle = (
+      activeSectionId: string | null,
+      scrollBefore: number,
+    ) => {
+      const navOffset = window.innerWidth >= 1024 ? 120 : 92;
+
+      const runRestore = (label: string) => {
+        if (activeSectionId) {
+          const section = document.getElementById(activeSectionId);
+          if (section) {
+            const targetTop =
+              section.getBoundingClientRect().top + window.scrollY - navOffset;
+            window.scrollTo({ top: Math.max(0, targetTop), behavior: "auto" });
+
+            return;
+          }
+        }
+
+        window.scrollTo({ top: scrollBefore, behavior: "auto" });
+      };
+
+      window.requestAnimationFrame(() => runRestore("raf"));
+      window.setTimeout(() => runRestore("200ms"), 200);
+    };
+
+    const scrollBefore = window.scrollY;
+    const activeSectionId = getLikelyActiveSectionId();
+
+    if (source === "mobile") {
+      setIsMobileMenuOpen(false);
+    }
+
+    toggleLocale();
+
+    restoreViewportAfterToggle(activeSectionId, scrollBefore);
+  };
 
   return (
     <nav className={navClasses} onMouseLeave={() => setActiveDropdown(null)}>
@@ -278,14 +353,10 @@ export default function Navbar({
             {t.insights}
           </Link>
           <Link
-            href="/#impact"
-            onClick={(event) => {
-              event.preventDefault();
-              handleSectionNavigation("impact");
-            }}
+            href="/career"
             className="hover:opacity-70 transition-opacity py-2"
           >
-            {t.impact}
+            {careerLabel}
           </Link>
         </div>
 
@@ -311,7 +382,7 @@ export default function Navbar({
         >
           <button
             type="button"
-            onClick={toggleLocale}
+            onClick={() => handleToggleLocaleWithDebug("desktop")}
             className="flex items-center gap-1.5 cursor-pointer hover:opacity-70 transition-opacity"
             aria-label="Toggle language"
           >
@@ -425,15 +496,12 @@ export default function Navbar({
               {t.insights}
             </Link>
             <Link
-              href="/#impact"
-              onClick={(event) => {
-                event.preventDefault();
-                handleSectionNavigation("impact");
-              }}
+              href="/career"
+              onClick={() => setIsMobileMenuOpen(false)}
               className="py-2 flex items-center gap-2"
             >
-              <Sparkles className="w-4 h-4 opacity-70" />
-              {t.impact}
+              <Briefcase className="w-4 h-4 opacity-70" />
+              {careerLabel}
             </Link>
             <Link
               href="/governance"
@@ -454,7 +522,7 @@ export default function Navbar({
                   role="switch"
                   aria-label="Toggle language"
                   aria-checked={locale === "id"}
-                  onClick={toggleLocale}
+                  onClick={() => handleToggleLocaleWithDebug("mobile")}
                   className={`relative inline-flex h-7 w-14 items-center rounded-full border transition-colors duration-300 ${mobileToggleTrackClasses}`}
                 >
                   <span

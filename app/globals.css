@@ -2,12 +2,62 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* CSS Custom Properties for Design Tokens */
+@theme {
+  /* Font Family */
+  --font-sans: "Inter Tight", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* Light Mode Colors */
+  --color-background: #F6F6F7;
+  --color-background-card: #FFFFFF;
+  --color-text-primary: #111827;
+  --color-text-muted: #6B7280;
+  --color-border-subtle: #E5E7EB;
+
+  /* Dark Mode Colors */
+  --color-dark-background: #151922;
+  --color-dark-background-card: #0B0F19;
+  --color-dark-text-primary: #FFFFFF;
+  --color-dark-text-muted: #D1D5DB;
+  --color-dark-border-subtle: rgba(255, 255, 255, 0.10);
+}
+
+/* Base Typography & Rendering */
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+}
+
+/* Body Base Styles */
+body {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+
+/* Ensure consistent box sizing */
+* {
+  box-sizing: border-box;
+}
+
+/* Color Scheme for Dark Mode Support */
+:root.dark {
+  color-scheme: dark;
+}
+
+:root:not(.dark) {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
   }
 }
