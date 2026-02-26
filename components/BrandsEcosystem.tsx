@@ -30,6 +30,14 @@ const MOBILE_LOGO_SIZES: Record<string, string> = {
   Lega: "h-[88px]",
 };
 
+const DESKTOP_LOGO_SIZES: Record<string, string> = {
+  Habbie: "md:h-[152px] lg:h-[178px]",
+};
+
+const LOGO_MAX_WIDTHS: Record<string, string> = {
+  Habbie: "max-w-[250px] md:max-w-[390px]",
+};
+
 type BrandsEcosystemProps = {
   isDarkMode?: boolean;
   locale: "en" | "id";
@@ -88,7 +96,7 @@ export default function BrandsEcosystem({
                     alt={brand.name}
                     width={460}
                     height={180}
-                    className={`${MOBILE_LOGO_SIZES[brand.name] ?? "h-[66px]"} md:h-[128px] lg:h-[150px] w-auto max-w-[220px] md:max-w-[340px] object-contain opacity-100 md:opacity-95  md:hover:opacity-100 transition duration-300`}
+                    className={`${MOBILE_LOGO_SIZES[brand.name] ?? "h-[66px]"} ${DESKTOP_LOGO_SIZES[brand.name] ?? "md:h-[128px] lg:h-[150px]"} w-auto ${LOGO_MAX_WIDTHS[brand.name] ?? "max-w-[220px] md:max-w-[340px]"} object-contain opacity-100 md:opacity-95  md:hover:opacity-100 transition duration-300`}
                     sizes="(max-width: 768px) 320px, 460px"
                     priority={false}
                   />

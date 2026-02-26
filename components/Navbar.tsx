@@ -45,12 +45,26 @@ export default function Navbar({
   const { navigateToPillar } = useValueChainNavigation();
 
   useEffect(() => {
+    const getScrollTop = () =>
+      window.scrollY ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(getScrollTop() > 1);
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("touchmove", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("touchmove", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
   const isTransparentTop = !isScrolled && !solidOnTop;
@@ -128,12 +142,12 @@ export default function Navbar({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const navClasses = `fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+  const navClasses = `fixed top-0 left-0 right-0 z-50 overflow-visible transition-[background-color,box-shadow] duration-200 ${
     isSolidNav
       ? isDarkMode
-        ? "bg-[#090d16]/95 py-4 shadow-sm backdrop-blur-md"
-        : "bg-white py-4 shadow-sm"
-      : "bg-transparent py-6"
+        ? "bg-[#090d16]/95 py-3 lg:py-4 shadow-sm backdrop-blur-md"
+        : "bg-white py-3 lg:py-4 shadow-sm"
+      : "bg-transparent py-3 lg:py-6"
   }`;
 
   const textClasses = isTransparentTop
@@ -203,7 +217,7 @@ export default function Navbar({
 
   return (
     <nav className={navClasses} onMouseLeave={() => setActiveDropdown(null)}>
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="relative max-w-[1400px] mx-auto px-6 md:px-12 min-h-[56px] lg:min-h-0 flex items-center justify-between">
         <div
           className={`hidden lg:flex items-center gap-8 text-sm font-medium ${textClasses}`}
         >
@@ -316,7 +330,7 @@ export default function Navbar({
           </Link>
         </div>
 
-        <div className="absolute left-1/2 -translate-x-1/2">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <Link
             href="/"
             onClick={handleLogoClick}

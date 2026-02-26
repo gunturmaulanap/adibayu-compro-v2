@@ -172,7 +172,7 @@ export default function Footer({ isDarkMode = false, locale }: FooterProps) {
                 <Linkedin className="w-5 h-5" />
               </Link>
               <Link
-                href="https://instagram.com"
+                href="https://instagram.com/adibayu.group/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"

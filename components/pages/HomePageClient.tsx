@@ -36,29 +36,31 @@ export default function HomePageClient() {
   }, []);
 
   return (
-    <main
-      className={`min-h-screen transition-colors duration-300 ${
-        isDarkMode ? "bg-[#0B0F19] text-white" : "bg-white text-gray-900"
-      }`}
-    >
+    <>
       <Navbar
         isDarkMode={isDarkMode}
         onToggleTheme={() => setIsDarkMode((prev) => !prev)}
       />
 
-      {/* LayoutGroup untuk sinkronisasi animasi antar section */}
-      <LayoutGroup>
-        <Hero isDarkMode={isDarkMode} locale={locale} />
-        <ValueChain isDarkMode={isDarkMode} locale={locale} />
-        <WhoWeEmpower isDarkMode={isDarkMode} locale={locale} />
-        <BrandsEcosystem isDarkMode={isDarkMode} locale={locale} />
-        <LatestInsights isDarkMode={isDarkMode} locale={locale} />
-        <WhyWeExist isDarkMode={isDarkMode} locale={locale} />
-        <Recognition isDarkMode={isDarkMode} locale={locale} />
-        <FindUs isDarkMode={isDarkMode} locale={locale} />
-      </LayoutGroup>
+      <main
+        className={`min-h-screen transition-colors duration-300 ${
+          isDarkMode ? "bg-[#0B0F19] text-white" : "bg-white text-gray-900"
+        }`}
+      >
+        {/* LayoutGroup untuk sinkronisasi animasi antar section */}
+        <LayoutGroup>
+          <Hero isDarkMode={isDarkMode} locale={locale} />
+          <ValueChain isDarkMode={isDarkMode} locale={locale} />
+          <WhoWeEmpower isDarkMode={isDarkMode} locale={locale} />
+          <BrandsEcosystem isDarkMode={isDarkMode} locale={locale} />
+          <LatestInsights isDarkMode={isDarkMode} locale={locale} />
+          <WhyWeExist isDarkMode={isDarkMode} locale={locale} />
+          <Recognition isDarkMode={isDarkMode} locale={locale} />
+          <FindUs isDarkMode={isDarkMode} locale={locale} />
+        </LayoutGroup>
 
-      <Footer isDarkMode={isDarkMode} locale={locale} />
-    </main>
+        <Footer isDarkMode={isDarkMode} locale={locale} />
+      </main>
+    </>
   );
 }

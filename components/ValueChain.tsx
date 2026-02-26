@@ -1,40 +1,111 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import type React from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Factory, Truck, Store, Globe } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { useValueChainNavigation } from "@/lib/useValueChainNavigation";
 import type { Locale } from "@/lib/i18n";
 import { copy } from "@/lib/translations";
+import Image from "next/image";
+import ManufWhite from "@/components/assets/value-chain/manuf-white.svg";
+import ManufBlack from "@/components/assets/value-chain/manuf-black.svg";
+import TrukBlack from "@/components/assets/value-chain/truk-black.svg";
+import TrukWhite from "@/components/assets/value-chain/truk-white.svg";
+import RetailWhite from "@/components/assets/value-chain/retail-white.svg";
+import RetailBlack from "@/components/assets/value-chain/retail-black.svg";
+import WorldWhite from "@/components/assets/value-chain/world-white.svg";
+import WorldBlack from "@/components/assets/value-chain/world-black.svg";
 
-const pillars = [
+type CustomIconProps = { isDarkMode?: boolean; className?: string };
+type PillarIcon = LucideIcon | React.ComponentType<CustomIconProps>;
+
+function ManufacturingIcon({ isDarkMode, className }: CustomIconProps) {
+  return (
+    <Image
+      src={isDarkMode ? ManufWhite : ManufBlack}
+      alt="Manufacturing Icon"
+      className={className}
+      priority
+      style={{ width: "100%", height: "100%" }}
+    />
+  );
+}
+
+function DistributionIcon({ isDarkMode, className }: CustomIconProps) {
+  return (
+    <Image
+      src={isDarkMode ? TrukWhite : TrukBlack}
+      alt="Distribution Icon"
+      className={className}
+      priority
+      style={{ width: "100%", height: "100%" }}
+    />
+  );
+}
+
+function RetailIcon({ isDarkMode, className }: CustomIconProps) {
+  return (
+    <Image
+      src={isDarkMode ? RetailWhite : RetailBlack}
+      alt="Retail Icon"
+      className={className}
+      priority
+      style={{ width: "100%", height: "70%" }}
+    />
+  );
+}
+
+function ImpactIcon({ isDarkMode, className }: CustomIconProps) {
+  return (
+    <Image
+      src={isDarkMode ? WorldWhite : WorldBlack}
+      alt="Impact Icon"
+      className={className}
+      priority
+      style={{ width: "100%", height: "70%" }}
+    />
+  );
+}
+
+const pillars: Array<{
+  id: string;
+  title: string;
+  description: string;
+  icon: PillarIcon;
+  isCustomIcon?: boolean;
+}> = [
   {
     id: "manufacturing",
     title: "Manufacture",
     description:
       "Engineering excellence and scalable production capabilities driving foundational value.",
-    icon: Factory,
+    icon: ManufacturingIcon,
+    isCustomIcon: true,
   },
   {
     id: "distribution",
     title: "Distribution",
     description:
       "Strategic logistics and supply chain optimization ensuring seamless market access.",
-    icon: Truck,
+    icon: DistributionIcon,
+    isCustomIcon: true,
   },
   {
     id: "retail",
     title: "Retail",
     description:
       "Consumer-centric touchpoints delivering premium experiences and market penetration.",
-    icon: Store,
+    icon: RetailIcon,
+    isCustomIcon: true,
   },
   {
     id: "impact",
     title: "Impact",
     description:
       "Sustainable growth and community empowerment creating long-term societal value.",
-    icon: Globe,
+    icon: ImpactIcon,
+    isCustomIcon: true,
   },
 ];
 
@@ -43,59 +114,25 @@ type ValueChainProps = {
   locale: Locale;
 };
 
-// Animation variants untuk directional flow
-const valueChainVariants = {
-  sectionHeader: {
-    hidden: {
-      opacity: 0,
-      x: -40,
-    },
+const variants = {
+  header: {
+    hidden: { opacity: 0, x: -40 },
     visible: {
       opacity: 1,
       x: 0,
-      transition: {
-        type: "spring",
-        stiffness: 80,
-        damping: 20,
-        mass: 1,
-      },
+      transition: { type: "spring", stiffness: 80, damping: 20, mass: 1 },
     },
   },
   subtitle: {
-    hidden: {
-      opacity: 0,
-      x: -30,
-    },
+    hidden: { opacity: 0, x: -30 },
     visible: {
       opacity: 1,
       x: 0,
-      transition: {
-        type: "spring",
-        stiffness: 80,
-        damping: 18,
-        delay: 0.15,
-      },
-    },
-  },
-  progressLine: {
-    hidden: { width: "0%" },
-    visible: {
-      width: "var(--progress-width)",
-      transition: {
-        type: "spring",
-        stiffness: 60,
-        damping: 25,
-        mass: 0.8,
-        delay: 0.4,
-      },
+      transition: { type: "spring", stiffness: 80, damping: 18, delay: 0.15 },
     },
   },
   pillar: (index: number) => ({
-    hidden: {
-      opacity: 0,
-      x: -30,
-      scale: 0.95,
-    },
+    hidden: { opacity: 0, x: -30, scale: 0.95 },
     visible: {
       opacity: 1,
       x: 0,
@@ -110,11 +147,7 @@ const valueChainVariants = {
     },
   }),
   mobileCard: {
-    hidden: {
-      opacity: 0,
-      scale: 0.92,
-      y: 20,
-    },
+    hidden: { opacity: 0, scale: 0.92, y: 20 },
     visible: {
       opacity: 1,
       scale: 1,
@@ -128,37 +161,26 @@ const valueChainVariants = {
       },
     },
   },
-  iconTransition: {
+  iconSwap: {
     exit: {
       opacity: 0,
       scale: 0.8,
       rotate: -90,
-      transition: {
-        duration: 0.3,
-        ease: [0.22, 1, 0.36, 1],
-      },
+      transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
     },
     enter: {
       opacity: 1,
       scale: 1,
       rotate: 0,
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 20,
-        mass: 0.5,
-      },
+      transition: { type: "spring", stiffness: 200, damping: 20, mass: 0.5 },
     },
   },
-  textTransition: {
+  textSwap: {
     exit: {
       opacity: 0,
       x: -20,
       filter: "blur(4px)",
-      transition: {
-        duration: 0.25,
-        ease: "easeInOut",
-      },
+      transition: { duration: 0.25, ease: "easeInOut" },
     },
     enter: {
       opacity: 1,
@@ -182,32 +204,128 @@ export default function ValueChain({ isDarkMode, locale }: ValueChainProps) {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [cycle, setCycle] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const isMobileRef = useRef(false);
+  const loadedIconCacheRef = useRef<Set<string>>(new Set());
   const { activePillar: activePillarFromNav } = useValueChainNavigation();
-  const t = copy[locale]?.home?.valueChain ?? copy.en.home.valueChain;
 
+  const getImageSrc = (img: { src: string } | string) =>
+    typeof img === "string" ? img : img.src;
+
+  const getPillarIconSrc = (pillarId: string) => {
+    const isDark = isDarkMode;
+
+    switch (pillarId) {
+      case "manufacturing":
+        return getImageSrc(isDark ? ManufWhite : ManufBlack);
+      case "distribution":
+        return getImageSrc(isDark ? TrukWhite : TrukBlack);
+      case "retail":
+        return getImageSrc(isDark ? RetailWhite : RetailBlack);
+      case "impact":
+        return getImageSrc(isDark ? WorldWhite : WorldBlack);
+      default:
+        return null;
+    }
+  };
+
+  const ensurePillarIconReady = async (index: number) => {
+    if (!isMobileRef.current) return;
+
+    const pillar = pillars[index];
+    if (!pillar?.isCustomIcon) return;
+
+    const cacheKey = `${isDarkMode ? "dark" : "light"}-${pillar.id}`;
+    if (loadedIconCacheRef.current.has(cacheKey)) return;
+
+    const src = getPillarIconSrc(pillar.id);
+    if (!src) return;
+
+    await new Promise<void>((resolve) => {
+      const img = new window.Image();
+      img.decoding = "async";
+      img.onload = () => resolve();
+      img.onerror = () => resolve();
+      img.src = src;
+
+      if (img.complete) resolve();
+    });
+
+    loadedIconCacheRef.current.add(cacheKey);
+  };
+
+  const t = useMemo(() => {
+    return copy[locale]?.home?.valueChain ?? copy.en.home.valueChain;
+  }, [locale]);
+
+  // Track mobile breakpoint status for icon-ready synchronization behavior
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+    const updateMobile = () => {
+      isMobileRef.current = mediaQuery.matches;
+    };
+
+    updateMobile();
+    mediaQuery.addEventListener("change", updateMobile);
+
+    return () => mediaQuery.removeEventListener("change", updateMobile);
+  }, []);
+
+  // Auto cycle
   useEffect(() => {
     let transitionTimer: number | undefined;
+    let cancelled = false;
 
     const activeTimer = window.setTimeout(() => {
+      if (cancelled) return;
       setIsTransitioning(true);
 
       transitionTimer = window.setTimeout(() => {
-        setActiveIndex((prev) => {
-          const next = (prev + 1) % pillars.length;
-          if (next === 0) setCycle((current) => current + 1);
-          return next;
-        });
-        setIsTransitioning(false);
+        const nextIndex = (activeIndex + 1) % pillars.length;
+
+        const runTransition = async () => {
+          await ensurePillarIconReady(nextIndex);
+          if (cancelled) return;
+          setActiveIndex(nextIndex);
+          setIsTransitioning(false);
+        };
+
+        void runTransition();
       }, TRANSITION_DURATION_MS);
     }, ACTIVE_DURATION_MS);
 
     return () => {
+      cancelled = true;
       window.clearTimeout(activeTimer);
       if (transitionTimer) window.clearTimeout(transitionTimer);
     };
-  }, [activeIndex]);
+  }, [activeIndex, isDarkMode]);
+
+  // Navigation override
+  useEffect(() => {
+    if (!activePillarFromNav) return;
+    let cancelled = false;
+
+    const foundIndex = pillars.findIndex((p) => p.id === activePillarFromNav);
+    if (foundIndex === -1 || foundIndex === activeIndex) return;
+
+    const start = window.setTimeout(() => setIsTransitioning(true), 0);
+    const timer = window.setTimeout(() => {
+      const runTransition = async () => {
+        await ensurePillarIconReady(foundIndex);
+        if (cancelled) return;
+        setActiveIndex(foundIndex);
+        setIsTransitioning(false);
+      };
+
+      void runTransition();
+    }, TRANSITION_DURATION_MS);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(start);
+      window.clearTimeout(timer);
+    };
+  }, [activePillarFromNav, activeIndex, isDarkMode]);
 
   const progressStep = isTransitioning
     ? Math.min(activeIndex + 1, LAST_INDEX)
@@ -216,36 +334,47 @@ export default function ValueChain({ isDarkMode, locale }: ValueChainProps) {
   const progressPercent = `${(progressStep / LAST_INDEX) * 100}%`;
   const currentPillar = pillars[activeIndex];
 
-  useEffect(() => {
-    if (activePillarFromNav) {
-      const foundIndex = pillars.findIndex((p) => p.id === activePillarFromNav);
-      if (foundIndex !== -1 && foundIndex !== activeIndex) {
-        const transitionStartTimer = window.setTimeout(() => {
-          setIsTransitioning(true);
-        }, 0);
-
-        const timer = window.setTimeout(() => {
-          setActiveIndex(foundIndex);
-          setIsTransitioning(false);
-        }, TRANSITION_DURATION_MS);
-
-        return () => {
-          window.clearTimeout(transitionStartTimer);
-          window.clearTimeout(timer);
-        };
-      }
-    }
-  }, [activePillarFromNav, activeIndex]);
-
   return (
     <section
       id="value-chain"
-      className={`py-20 md:py-24 transition-colors duration-300 ${
+      className={`py-24 md:py-40 transition-colors duration-300 ${
         isDarkMode ? "bg-[#151922]" : "bg-[#F6F6F7]"
       }`}
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-        {/* Section Header - Directional Slide */}
+        {/* Preload all icon variants used by the current theme to avoid first-swap delay on mobile */}
+        <div className="sr-only" aria-hidden>
+          <Image
+            src={isDarkMode ? ManufWhite : ManufBlack}
+            alt=""
+            width={1}
+            height={1}
+            priority
+          />
+          <Image
+            src={isDarkMode ? TrukWhite : TrukBlack}
+            alt=""
+            width={1}
+            height={1}
+            priority
+          />
+          <Image
+            src={isDarkMode ? RetailWhite : RetailBlack}
+            alt=""
+            width={1}
+            height={1}
+            priority
+          />
+          <Image
+            src={isDarkMode ? WorldWhite : WorldBlack}
+            alt=""
+            width={1}
+            height={1}
+            priority
+          />
+        </div>
+
+        {/* Header */}
         <motion.div
           className="mb-10 md:mb-16"
           initial="hidden"
@@ -256,7 +385,7 @@ export default function ValueChain({ isDarkMode, locale }: ValueChainProps) {
             className={`text-3xl md:text-5xl font-bold tracking-tight mb-4 md:mb-6 ${
               isDarkMode ? "text-white" : "text-gray-900"
             }`}
-            variants={valueChainVariants.sectionHeader}
+            variants={variants.header}
           >
             {t.title}
           </motion.h2>
@@ -264,73 +393,168 @@ export default function ValueChain({ isDarkMode, locale }: ValueChainProps) {
             className={`text-base md:text-lg max-w-2xl leading-relaxed ${
               isDarkMode ? "text-gray-300" : "text-gray-500"
             }`}
-            variants={valueChainVariants.subtitle}
+            variants={variants.subtitle}
           >
             {t.subtitle}
           </motion.p>
         </motion.div>
 
-        <div className="relative">
-          {/* Desktop Progress Line */}
+        {/* MOBILE */}
+        <motion.div
+          className="md:hidden"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.35, margin: "0px 0px -100px 0px" }}
+          variants={variants.mobileCard}
+        >
+          <div className="grid grid-cols-4 gap-2 mb-4">
+            {pillars.map((pillar, index) => (
+              <motion.div
+                key={`mobile-step-${pillar.id}`}
+                custom={index}
+                initial="hidden"
+                animate="visible"
+                variants={variants.pillar(index)}
+                className={`text-[11px] tracking-tight ${
+                  activeIndex === index
+                    ? "opacity-100 font-semibold"
+                    : "opacity-40 font-medium"
+                } ${isDarkMode ? "text-white" : "text-gray-900"}`}
+              >
+                {t.pillars[index]}
+              </motion.div>
+            ))}
+          </div>
+
           <div
-            className={`absolute top-24 left-0 w-full h-px hidden md:block ${
+            className={`h-px w-full relative overflow-hidden mb-6 ${
               isDarkMode ? "bg-white/20" : "bg-gray-200"
             }`}
           >
             <motion.div
-              className={`h-full will-change-[width] ${
+              className={`absolute top-0 left-0 h-full will-change-[width] ${
                 isDarkMode ? "bg-white" : "bg-gray-900"
               }`}
-              style={{ width: progressPercent }}
-              initial="hidden"
-              animate={hasAnimated ? "visible" : "hidden"}
-              variants={valueChainVariants.progressLine}
-              onAnimationComplete={() => {
-                setHasAnimated(true);
+              initial={{ width: "0%" }}
+              animate={{ width: progressPercent }}
+              transition={{
+                type: "spring",
+                stiffness: 60,
+                damping: 25,
+                mass: 0.8,
               }}
-              custom={{ "--progress-width": progressPercent }}
             />
           </div>
 
-          {/* Mobile Compact Flow */}
-          <motion.div
-            className="md:hidden"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{
-              once: true,
-              amount: 0.35,
-              margin: "0px 0px -100px 0px",
-            }}
-            variants={valueChainVariants.mobileCard}
+          <div
+            className={`rounded-2xl border px-5 py-5 ${
+              isDarkMode ? "border-white/15" : "border-gray-200"
+            }`}
           >
-            <div className="grid grid-cols-4 gap-2 mb-4">
-              {pillars.map((pillar, index) => (
+            <div className="flex flex-col items-center gap-2 mb-3">
+              <AnimatePresence mode="wait">
                 <motion.div
-                  key={`mobile-step-${pillar.id}`}
-                  custom={index}
-                  initial="hidden"
-                  animate="visible"
-                  variants={valueChainVariants.pillar(index)}
-                  className={`text-[11px] tracking-tight ${
-                    activeIndex === index
-                      ? "opacity-100 font-semibold"
-                      : "opacity-40 font-medium"
-                  } ${isDarkMode ? "text-white" : "text-gray-900"}`}
+                  key={`mobile-icon-${currentPillar.id}`}
+                  variants={variants.iconSwap}
+                  initial="exit"
+                  animate="enter"
+                  exit="exit"
                 >
-                  {t.pillars[index]}
+                  {currentPillar.isCustomIcon ? (
+                    <currentPillar.icon
+                      isDarkMode={isDarkMode}
+                      className="w-8 h-8"
+                    />
+                  ) : (
+                    <currentPillar.icon
+                      className={`w-8 h-8 ${isDarkMode ? "text-white" : "text-gray-900"}`}
+                      strokeWidth={1}
+                    />
+                  )}
                 </motion.div>
-              ))}
+              </AnimatePresence>
+
+              <motion.h3
+                key={`mobile-title-${currentPillar.id}`}
+                className={`text-xl font-bold tracking-tight text-center ${
+                  isDarkMode ? "text-white" : "text-gray-900"
+                }`}
+                variants={variants.textSwap}
+                initial="exit"
+                animate="enter"
+              >
+                {t.pillars[activeIndex]}
+              </motion.h3>
             </div>
 
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={`mobile-desc-${currentPillar.id}`}
+                className={`text-sm leading-relaxed ${
+                  isDarkMode ? "text-gray-300" : "text-gray-500"
+                }`}
+                variants={variants.textSwap}
+                initial="exit"
+                animate="enter"
+                exit="exit"
+              >
+                {t.descriptions[activeIndex]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+        </motion.div>
+
+        {/* DESKTOP (rapih + line di bawah icon, size icon tetap w-10 h-10) */}
+        <div className="hidden md:block">
+          <div className="min-h-[520px] lg:min-h-[580px] flex flex-col justify-center">
+            {/* Row 1: Icons */}
             <motion.div
-              className={`h-px w-full relative overflow-hidden mb-6 ${
-                isDarkMode ? "bg-white/20" : "bg-gray-200"
-              }`}
+              className="grid grid-cols-4 gap-8 lg:gap-12 items-end pt-6"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{
+                once: true,
+                amount: 0.35,
+                margin: "0px 0px -100px 0px",
+              }}
             >
+              {pillars.map((pillar, index) => (
+                <motion.div
+                  key={`desktop-icon-${pillar.id}`}
+                  custom={index}
+                  variants={variants.pillar(index)}
+                  className="flex flex-col items-center"
+                >
+                  <motion.div
+                    animate={{
+                      opacity: activeIndex === index ? 1 : 0.4,
+                      scale: activeIndex === index ? 1 : 0.9,
+                    }}
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                  >
+                    {pillar.isCustomIcon ? (
+                      <pillar.icon
+                        isDarkMode={isDarkMode}
+                        className="w-10 h-10"
+                      />
+                    ) : (
+                      <pillar.icon
+                        className={`w-10 h-10 ${isDarkMode ? "text-white" : "text-gray-900"}`}
+                        strokeWidth={1}
+                      />
+                    )}
+                  </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Row 2: Line (fixed under icons) */}
+            <div className="relative mt-8 mb-8 h-10 flex items-center">
+              <div
+                className={`h-px w-full ${isDarkMode ? "bg-white/20" : "bg-gray-200"}`}
+              />
               <motion.div
-                style={{ width: progressPercent }}
-                className={`absolute top-0 left-0 h-full will-change-[width] ${
+                className={`absolute left-0 top-1/2 -translate-y-1/2 h-px will-change-[width] ${
                   isDarkMode ? "bg-white" : "bg-gray-900"
                 }`}
                 initial={{ width: "0%" }}
@@ -342,139 +566,53 @@ export default function ValueChain({ isDarkMode, locale }: ValueChainProps) {
                   mass: 0.8,
                 }}
               />
-            </motion.div>
+            </div>
 
-            <motion.div
-              className={`rounded-2xl border px-5 py-5 ${
-                isDarkMode ? "border-white/15" : "border-gray-200"
-              }`}
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={`mobile-icon-${currentPillar.id}`}
-                    variants={valueChainVariants.iconTransition}
-                    initial="exit"
-                    animate="enter"
-                    exit="exit"
+            {/* Row 3: Titles + Descriptions (rapih, tidak loncat) */}
+            <div className="grid grid-cols-4 gap-8 lg:gap-12">
+              {pillars.map((pillar, index) => (
+                <div
+                  key={`desktop-text-${pillar.id}`}
+                  className="flex flex-col items-center"
+                >
+                  <motion.h3
+                    className={`text-xl mb-3 tracking-tight text-center ${
+                      activeIndex === index
+                        ? "font-bold opacity-100"
+                        : "font-medium opacity-40"
+                    } ${isDarkMode ? "text-white" : "text-gray-900"}`}
+                    animate={{ y: activeIndex === index ? 0 : 4 }}
+                    transition={{ type: "spring", stiffness: 120, damping: 18 }}
                   >
-                    <currentPillar.icon
-                      className={`w-8 h-8 ${isDarkMode ? "text-white" : "text-gray-900"}`}
-                      strokeWidth={1}
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                    {t.pillars[index]}
+                  </motion.h3>
 
-                <motion.h3
-                  key={`mobile-title-${currentPillar.id}`}
-                  className={`text-xl font-bold tracking-tight ${
-                    isDarkMode ? "text-white" : "text-gray-900"
-                  }`}
-                  variants={valueChainVariants.textTransition}
-                  initial="exit"
-                  animate="enter"
-                >
-                  {t.pillars[activeIndex]}
-                </motion.h3>
-              </div>
-
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={`mobile-desc-${currentPillar.id}`}
-                  className={`text-sm leading-relaxed ${
-                    isDarkMode ? "text-gray-300" : "text-gray-500"
-                  }`}
-                  variants={valueChainVariants.textTransition}
-                  initial="exit"
-                  animate="enter"
-                  exit="exit"
-                >
-                  {t.descriptions[activeIndex]}
-                </motion.p>
-              </AnimatePresence>
-            </motion.div>
-          </motion.div>
-
-          {/* Desktop Flow */}
-          <motion.div
-            className="hidden md:grid md:grid-cols-4 gap-6 lg:gap-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{
-              once: true,
-              amount: 0.35,
-              margin: "0px 0px -100px 0px",
-            }}
-          >
-            {pillars.map((pillar, index) => (
-              <motion.div
-                key={pillar.id}
-                custom={index}
-                variants={valueChainVariants.pillar(index)}
-                className="flex flex-col relative"
-              >
-                <div className="h-24 flex items-center justify-start">
-                  <motion.div
-                    animate={{
-                      opacity: activeIndex === index ? 1 : 0.4,
-                      scale: activeIndex === index ? 1 : 0.9,
-                    }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 20,
-                    }}
-                  >
-                    <pillar.icon
-                      className={`w-10 h-10 ${
-                        isDarkMode ? "text-white" : "text-gray-900"
-                      }`}
-                      strokeWidth={1}
-                    />
-                  </motion.div>
+                  <div className="min-h-[96px] w-full">
+                    <AnimatePresence mode="wait">
+                      {activeIndex === index ? (
+                        <motion.p
+                          key={`desc-${pillar.id}`}
+                          className={`text-sm leading-relaxed text-center px-2 ${
+                            isDarkMode ? "text-gray-300" : "text-gray-500"
+                          }`}
+                          variants={variants.textSwap}
+                          initial="exit"
+                          animate="enter"
+                          exit="exit"
+                        >
+                          {t.descriptions[index]}
+                        </motion.p>
+                      ) : (
+                        <p className="text-sm leading-relaxed text-center px-2 opacity-0 select-none">
+                          placeholder
+                        </p>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
-
-                <div className="h-px w-full mb-6"></div>
-
-                <motion.h3
-                  className={`text-xl mb-4 tracking-tight ${
-                    activeIndex === index
-                      ? "font-bold opacity-100"
-                      : "font-medium opacity-40"
-                  } ${isDarkMode ? "text-white" : "text-gray-900"}`}
-                  animate={{
-                    x: activeIndex === index ? 0 : -10,
-                  }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 100,
-                    damping: 20,
-                  }}
-                >
-                  {t.pillars[index]}
-                </motion.h3>
-
-                <div className="min-h-[84px]">
-                  <AnimatePresence mode="wait">
-                    {activeIndex === index && (
-                      <motion.p
-                        key={pillar.id}
-                        className={`text-sm leading-relaxed pr-4 ${
-                          isDarkMode ? "text-gray-300" : "text-gray-500"
-                        }`}
-                        variants={valueChainVariants.textTransition}
-                        initial="exit"
-                        animate="enter"
-                        exit="exit"
-                      >
-                        {t.descriptions[index]}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

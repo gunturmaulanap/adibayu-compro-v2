@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MapPin, Mail, Phone } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { Locale } from "@/lib/i18n";
 import { copy } from "@/lib/translations";
 
@@ -163,14 +163,50 @@ const findUsVariants = {
 export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
   const t = copy[locale]?.home?.findUs ?? copy.en.home.findUs;
 
-  const mapEmbedUrl =
+  const locationQuery =
+    "Graha Pratama Building Level 19, Jl. Letjen M.T. Haryono No.KAV15, Tebet, Jakarta 12810";
+
+  const mapEmbedPrimaryUrl =
+    "https://maps.google.com/maps?q=Graha%20Pratama%20Building%20Level%2019,%20Jl.%20Letjen%20M.T.%20Haryono%20No.KAV15,%20Tebet,%20Jakarta%2012810&t=&z=16&ie=UTF8&iwloc=&output=embed";
+
+  const mapEmbedFallbackUrl =
     "https://www.google.com/maps?q=Graha%20Pratama%20Building%20Level%2019,%20Jl.%20Letjen%20M.T.%20Haryono%20No.KAV15,%20Tebet,%20Jakarta%2012810&output=embed";
+
+  const [mapSrc, setMapSrc] = useState(mapEmbedPrimaryUrl);
+  const [mapLoaded, setMapLoaded] = useState(false);
+  const [liveDirectionsUrl, setLiveDirectionsUrl] = useState<string | null>(
+    null,
+  );
 
   const mapsUrl =
     "https://maps.google.com/?q=Graha%20Pratama%20Building%20Level%2019,%20Jl.%20Letjen%20M.T.%20Haryono%20No.KAV15,%20Jakarta";
 
   const email = "office@adibayu.com";
   const phone = "+6281127009500";
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
+    const timeoutId = window.setTimeout(() => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const nextUrl = `https://www.google.com/maps/dir/?api=1&origin=${latitude},${longitude}&destination=${encodeURIComponent(locationQuery)}&travelmode=driving`;
+          setLiveDirectionsUrl(nextUrl);
+        },
+        () => {
+          setLiveDirectionsUrl(null);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 7000,
+          maximumAge: 60_000,
+        },
+      );
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [locationQuery]);
 
   return (
     <section
@@ -181,7 +217,7 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
     >
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
         <motion.div
-          className="mb-12 md:mb-16"
+          className="mb-12 text-center md:mb-16"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
@@ -195,7 +231,7 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
             {t.title}
           </motion.h2>
           <motion.p
-            className={`mt-4 text-base md:text-lg leading-relaxed max-w-2xl ${
+            className={`mx-auto mt-4 max-w-2xl text-base leading-relaxed md:text-lg ${
               isDarkMode ? "text-gray-400" : "text-gray-600"
             }`}
             variants={findUsVariants.subtitle}
@@ -228,8 +264,18 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
                 },
               }}
             >
+              {!mapLoaded && (
+                <div
+                  className={`absolute inset-0 z-[1] flex items-center justify-center text-sm ${
+                    isDarkMode ? "text-neutral-300" : "text-neutral-600"
+                  }`}
+                >
+                  {locale === "id" ? "Memuat peta..." : "Loading map..."}
+                </div>
+              )}
+
               <iframe
-                src={mapEmbedUrl}
+                src={mapSrc}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -238,6 +284,13 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Adibayu Group Location"
                 className="w-full h-full"
+                onLoad={() => setMapLoaded(true)}
+                onError={() => {
+                  if (mapSrc !== mapEmbedFallbackUrl) {
+                    setMapSrc(mapEmbedFallbackUrl);
+                    setMapLoaded(false);
+                  }
+                }}
               />
             </motion.div>
           </motion.div>
@@ -403,13 +456,47 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
                   }}
                 >
                   <MapPin className="w-4 h-4" />
-                  Open in Google Maps
+                  {t.openMaps}
                 </motion.a>
 
+                {liveDirectionsUrl && (
+                  <motion.a
+                    custom={1}
+                    href={liveDirectionsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variants={findUsVariants.ctaButton(1)}
+                    className={`inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl border px-5 text-sm font-semibold transition-all duration-200 ${
+                      isDarkMode
+                        ? "border-neutral-700 text-neutral-100 hover:bg-neutral-800"
+                        : "border-neutral-300 text-neutral-900 hover:bg-neutral-50"
+                    }`}
+                    whileHover={{
+                      y: -3,
+                      borderColor: isDarkMode
+                        ? "rgba(255,255,255,0.3)"
+                        : "rgba(0,0,0,0.3)",
+                      transition: {
+                        type: "spring",
+                        stiffness: 250,
+                        damping: 18,
+                      },
+                    }}
+                    whileTap={{
+                      scale: 0.97,
+                    }}
+                  >
+                    <MapPin className="w-4 h-4" />
+                    {locale === "id"
+                      ? "Rute realtime dari lokasi saya"
+                      : "Live directions from my location"}
+                  </motion.a>
+                )}
+
                 <motion.a
-                  custom={1}
+                  custom={2}
                   href={`mailto:${email}`}
-                  variants={findUsVariants.ctaButton(1)}
+                  variants={findUsVariants.ctaButton(2)}
                   className={`inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl border px-5 text-sm font-semibold transition-all duration-200 ${
                     isDarkMode
                       ? "border-neutral-700 text-neutral-100 hover:bg-neutral-800"
@@ -431,7 +518,7 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
                   }}
                 >
                   <Mail className="w-4 h-4" />
-                  Send Email
+                  {t.sendEmail}
                 </motion.a>
               </motion.div>
             </div>
