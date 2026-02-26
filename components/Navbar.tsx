@@ -199,7 +199,7 @@ export default function Navbar({
     locale === "id" ? "Perusahaan Kami" : "Our Companies";
 
   const aboutLabel = locale === "id" ? "Tentang Kami" : "About Us";
-  const careerLabel = locale === "id" ? "Karir" : "Career";
+  const careerLabel = locale === "id" ? "Karier" : "Career";
 
   const handleToggleLocale = (source: "desktop" | "mobile") => {
     const scrollBefore = window.scrollY;
