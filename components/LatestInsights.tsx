@@ -138,7 +138,7 @@ export default function LatestInsights({
 
   return (
     <section
-      id="latest-insights"
+      id="news-updates"
       className={`py-20 md:py-24 overflow-hidden transition-colors duration-300 ${
         isDarkMode ? "bg-[#0B0F19]" : "bg-white"
       }`}

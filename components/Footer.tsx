@@ -119,7 +119,7 @@ export default function Footer({ isDarkMode = false, locale }: FooterProps) {
     ],
     impact: [
       { href: "#impact", label: t.impactLinks[0] },
-      { href: "/#latest-insights", label: t.impactLinks[1] },
+      { href: "/#news-updates", label: t.impactLinks[1] },
       //   { href: "#", label: t.impactLinks[2] },
       //   { href: "#", label: t.impactLinks[3] },
     ],

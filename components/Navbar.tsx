@@ -316,10 +316,10 @@ export default function Navbar({
             {whoWeEmpowerLabel}
           </Link>
           <Link
-            href="/#latest-insights"
+            href="/#news-updates"
             onClick={(event) => {
               event.preventDefault();
-              handleSectionNavigation("latest-insights");
+              handleSectionNavigation("news-updates");
             }}
             className="hover:opacity-70 transition-opacity py-2"
           >
@@ -458,10 +458,10 @@ export default function Navbar({
               {whoWeEmpowerLabel}
             </Link>
             <Link
-              href="/#latest-insights"
+              href="/#news-updates"
               onClick={(event) => {
                 event.preventDefault();
-                handleSectionNavigation("latest-insights");
+                handleSectionNavigation("news-updates");
               }}
               className="py-2 flex items-center gap-2"
             >
