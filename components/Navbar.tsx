@@ -120,6 +120,11 @@ export default function Navbar({
       router.push("/");
       return;
     }
+
+    if (window.location.pathname === "/" && window.location.hash) {
+      window.history.replaceState(null, "", "/");
+    }
+
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 

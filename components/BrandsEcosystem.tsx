@@ -4,6 +4,9 @@ import madudizLogo from "@/components/assets/brands/madudiz.png";
 import paramorinaLogo from "@/components/assets/brands/paramorina.png";
 import protabuminLogo from "@/components/assets/brands/protabumin.png";
 import yayleLogo from "@/components/assets/brands/yayle.png";
+import richsweet from "@/components/assets/brands/richsweet.png";
+import vitabumin from "@/components/assets/brands/vitabumin.png";
+import lega from "@/components/assets/brands/lega.png";
 
 const brands = [
   { name: "Habbie", logo: habbieLogo },
@@ -11,6 +14,9 @@ const brands = [
   { name: "Paramorina", logo: paramorinaLogo },
   { name: "Protabumin", logo: protabuminLogo },
   { name: "Yayle", logo: yayleLogo },
+  { name: "Richsweet", logo: richsweet },
+  { name: "Vitabumin", logo: vitabumin },
+  { name: "Lega", logo: lega },
 ];
 
 const MOBILE_LOGO_SIZES: Record<string, string> = {
@@ -19,6 +25,9 @@ const MOBILE_LOGO_SIZES: Record<string, string> = {
   Paramorina: "h-[88px]",
   Protabumin: "h-[80px]",
   Yayle: "h-[88px]",
+  Richsweet: "h-[88px]",
+  Vitabumin: "h-[88px]",
+  Lega: "h-[88px]",
 };
 
 type BrandsEcosystemProps = {
@@ -79,7 +88,7 @@ export default function BrandsEcosystem({
                     alt={brand.name}
                     width={460}
                     height={180}
-                    className={`${MOBILE_LOGO_SIZES[brand.name] ?? "h-[88px]"} md:h-[168px] lg:h-[190px] w-auto max-w-[280px] md:max-w-[440px] object-contain opacity-100 md:opacity-95 md:grayscale md:hover:grayscale-0 md:hover:opacity-100 transition duration-300`}
+                    className={`${MOBILE_LOGO_SIZES[brand.name] ?? "h-[66px]"} md:h-[128px] lg:h-[150px] w-auto max-w-[220px] md:max-w-[340px] object-contain opacity-100 md:opacity-95  md:hover:opacity-100 transition duration-300`}
                     sizes="(max-width: 768px) 320px, 460px"
                     priority={false}
                   />

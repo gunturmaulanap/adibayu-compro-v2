@@ -260,7 +260,7 @@ export const copy: Record<Locale, Copy> = {
         subtitle:
           "External validation of our commitment to excellence across all business units.",
         footer:
-          "Certifications and awards are independently verified by respective issuing organizations. Rewards reflects achievement across Adibayu Group business ecosystem.",
+          "Certifications and awards are independently verified by respective issuing organizations. Recognition reflects achievement across Adibayu Group business ecosystem.",
       },
       findUs: {
         title: "Find Us",
@@ -508,11 +508,11 @@ export const copy: Record<Locale, Copy> = {
         ],
       },
       recognition: {
-        title: "Penghargaan",
+        title: "Penghargaan & Pengakuan",
         subtitle:
           "Validasi eksternal atas komitmen kami terhadap keunggulan di seluruh unit bisnis.",
         footer:
-          "Sertifikasi dan penghargaan diverifikasi secara independen oleh lembaga penerbit terkait. Penghargaan ini mencerminkan pencapaian di seluruh ekosistem bisnis Adibayu Group.",
+          "Sertifikasi dan penghargaan diverifikasi secara independen oleh lembaga penerbit terkait. Pengakuan ini mencerminkan pencapaian di seluruh ekosistem bisnis Adibayu Group.",
       },
       findUs: {
         title: "Temukan Kami",
