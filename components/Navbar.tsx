@@ -130,6 +130,9 @@ export default function Navbar({
 
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
+
+    setIsMobileMenuOpen(false);
+
     if (pathname !== "/") {
       router.push("/");
       return;

@@ -573,10 +573,10 @@ export default function ValueChain({ isDarkMode, locale }: ValueChainProps) {
               {pillars.map((pillar, index) => (
                 <div
                   key={`desktop-text-${pillar.id}`}
-                  className="flex flex-col items-center"
+                  className="flex flex-col items-start"
                 >
                   <motion.h3
-                    className={`text-xl mb-3 tracking-tight text-center ${
+                    className={`text-xl mb-3 tracking-tight text-left w-full ${
                       activeIndex === index
                         ? "font-bold opacity-100"
                         : "font-medium opacity-40"
@@ -592,7 +592,7 @@ export default function ValueChain({ isDarkMode, locale }: ValueChainProps) {
                       {activeIndex === index ? (
                         <motion.p
                           key={`desc-${pillar.id}`}
-                          className={`text-sm leading-relaxed text-center px-2 ${
+                          className={`text-sm leading-relaxed text-left ${
                             isDarkMode ? "text-gray-300" : "text-gray-500"
                           }`}
                           variants={variants.textSwap}
@@ -603,7 +603,7 @@ export default function ValueChain({ isDarkMode, locale }: ValueChainProps) {
                           {t.descriptions[index]}
                         </motion.p>
                       ) : (
-                        <p className="text-sm leading-relaxed text-center px-2 opacity-0 select-none">
+                        <p className="text-sm leading-relaxed text-left opacity-0 select-none">
                           placeholder
                         </p>
                       )}

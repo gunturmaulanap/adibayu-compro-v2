@@ -219,13 +219,33 @@ export default function WhoWeArePageClient() {
   const { locale } = useLocale();
 
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [themeInitialized, setThemeInitialized] = useState(false);
   const [activePortfolioIndex, setActivePortfolioIndex] = useState(0);
   const [isPortfolioPaused, setIsPortfolioPaused] = useState(false);
 
   useEffect(() => {
+    const savedTheme = window.localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setIsDarkMode(true);
+      setThemeInitialized(true);
+      return;
+    }
+
+    if (savedTheme === "light") {
+      setIsDarkMode(false);
+      setThemeInitialized(true);
+      return;
+    }
+
+    setIsDarkMode(document.documentElement.classList.contains("dark"));
+    setThemeInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!themeInitialized) return;
     document.documentElement.classList.toggle("dark", isDarkMode);
     window.localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-  }, [isDarkMode]);
+  }, [isDarkMode, themeInitialized]);
 
   useEffect(() => {
     if (isPortfolioPaused) return;
@@ -247,7 +267,10 @@ export default function WhoWeArePageClient() {
         solidOnTop
       />
 
-      <section className="relative h-[78vh] min-h-[560px] w-full overflow-hidden">
+      <section
+        id="hero"
+        className="relative h-[78vh] min-h-[560px] w-full overflow-hidden"
+      >
         <Image
           src={heroImage}
           alt="Adibayu industrial operations"
@@ -279,7 +302,7 @@ export default function WhoWeArePageClient() {
         </div>
       </section>
 
-      <section className="py-16 md:py-20">
+      <section id="portfolio" className="py-16 md:py-20">
         <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-10 px-6 md:px-12 lg:grid-cols-2 lg:gap-14">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-500 dark:text-gray-400">
@@ -426,7 +449,10 @@ export default function WhoWeArePageClient() {
         </div>
       </section>
 
-      <section className="bg-[#f4f6f8] py-16 dark:bg-[#0b111b] md:py-20">
+      <section
+        id="vision"
+        className="bg-[#f4f6f8] py-16 dark:bg-[#0b111b] md:py-20"
+      >
         <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-10 px-6 md:px-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
@@ -456,7 +482,7 @@ export default function WhoWeArePageClient() {
         </div>
       </section>
 
-      <section className="py-16 md:py-20">
+      <section id="values" className="py-16 md:py-20">
         <div className="mx-auto max-w-[1400px] px-6 md:px-12">
           <div className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-gradient-to-br from-slate-50 via-white to-slate-100 p-6 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.35)] dark:border-white/10 dark:from-[#0b1220] dark:via-[#0c1424] dark:to-[#0a1120] md:p-10">
             <div className="pointer-events-none absolute -left-20 -top-20 h-56 w-56 rounded-full bg-cyan-500/10 blur-3xl dark:bg-cyan-400/20" />
@@ -525,7 +551,7 @@ export default function WhoWeArePageClient() {
         </div>
       </section>
 
-      <section className="py-6 md:py-10">
+      <section id="leadership" className="py-6 md:py-10">
         <div className="mx-auto max-w-[1400px] px-6 md:px-12">
           <h2 className="text-3xl font-bold tracking-tight md:text-5xl">
             {t.leadershipTitle}

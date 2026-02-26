@@ -17,11 +17,31 @@ import { useLocale } from "@/lib/i18n";
 export default function HomePageClient() {
   const { locale } = useLocale();
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [themeInitialized, setThemeInitialized] = useState(false);
 
   useEffect(() => {
+    const savedTheme = window.localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setIsDarkMode(true);
+      setThemeInitialized(true);
+      return;
+    }
+
+    if (savedTheme === "light") {
+      setIsDarkMode(false);
+      setThemeInitialized(true);
+      return;
+    }
+
+    setIsDarkMode(document.documentElement.classList.contains("dark"));
+    setThemeInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!themeInitialized) return;
     document.documentElement.classList.toggle("dark", isDarkMode);
     window.localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-  }, [isDarkMode]);
+  }, [isDarkMode, themeInitialized]);
 
   useEffect(() => {
     if ("scrollRestoration" in window.history) {

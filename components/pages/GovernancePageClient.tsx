@@ -16,18 +16,35 @@ import { copy } from "@/lib/translations";
 export default function GovernancePageClient() {
   const { locale } = useLocale();
 
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof document === "undefined") return false;
-    return document.documentElement.classList.contains("dark");
-  });
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [themeInitialized, setThemeInitialized] = useState(false);
 
   const [activeFilter, setActiveFilter] =
     useState<(typeof governanceFilterChips)[number]>("All");
 
   useEffect(() => {
+    const savedTheme = window.localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setIsDarkMode(true);
+      setThemeInitialized(true);
+      return;
+    }
+
+    if (savedTheme === "light") {
+      setIsDarkMode(false);
+      setThemeInitialized(true);
+      return;
+    }
+
+    setIsDarkMode(document.documentElement.classList.contains("dark"));
+    setThemeInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!themeInitialized) return;
     document.documentElement.classList.toggle("dark", isDarkMode);
     window.localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-  }, [isDarkMode]);
+  }, [isDarkMode, themeInitialized]);
 
   const filteredPillars = useMemo<GovernancePillar[]>(() => {
     if (activeFilter === "All") {
@@ -46,7 +63,10 @@ export default function GovernancePageClient() {
         onToggleTheme={() => setIsDarkMode((prev) => !prev)}
         solidOnTop
       />
-      <section className="relative overflow-hidden px-6 pb-16 pt-32 md:px-10 md:pt-36 lg:px-16">
+      <section
+        id="portfolio"
+        className="relative overflow-hidden px-6 pb-16 pt-32 md:px-10 md:pt-36 lg:px-16"
+      >
         <div className="pointer-events-none absolute inset-0 opacity-50 dark:opacity-30">
           <div className="h-full w-full bg-[radial-gradient(circle_at_top_left,_rgba(0,0,0,0.06),_transparent_55%)] dark:bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.08),_transparent_50%)]" />
         </div>
@@ -70,7 +90,7 @@ export default function GovernancePageClient() {
         </div>
       </section>
 
-      <section className="px-6 py-14 md:px-10 lg:px-16">
+      <section id="how-we-govern" className="px-6 py-14 md:px-10 lg:px-16">
         <div className="mx-auto max-w-6xl">
           <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
             {t.howWeGovern}
@@ -94,7 +114,10 @@ export default function GovernancePageClient() {
         </div>
       </section>
 
-      <section className="bg-[#F6F6F7] px-6 py-16 md:px-10 lg:px-16 dark:bg-[#0b111b]">
+      <section
+        id="portfolio-structure"
+        className="bg-[#F6F6F7] px-6 py-16 md:px-10 lg:px-16 dark:bg-[#0b111b]"
+      >
         <div className="mx-auto max-w-6xl">
           <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
             {t.portfolioTitle}

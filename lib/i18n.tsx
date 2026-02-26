@@ -21,27 +21,30 @@ const LocaleContext = createContext<LocaleContextValue | null>(null);
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>("id");
+  const [localeInitialized, setLocaleInitialized] = useState(false);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      const saved =
-        window.localStorage.getItem("lang") ||
-        window.localStorage.getItem("locale");
-      if (saved === "id" || saved === "en") {
-        setLocale(saved);
-      } else {
-        window.localStorage.setItem("lang", "id");
-      }
-    }, 0);
+    const saved =
+      window.localStorage.getItem("lang") ||
+      window.localStorage.getItem("locale");
 
-    return () => window.clearTimeout(timer);
+    if (saved === "id" || saved === "en") {
+      setLocale(saved);
+      setLocaleInitialized(true);
+      return;
+    }
+
+    window.localStorage.setItem("lang", "id");
+    window.localStorage.setItem("locale", "id");
+    setLocaleInitialized(true);
   }, []);
 
   useEffect(() => {
+    if (!localeInitialized) return;
     document.documentElement.lang = locale;
     window.localStorage.setItem("lang", locale);
     window.localStorage.setItem("locale", locale);
-  }, [locale]);
+  }, [locale, localeInitialized]);
 
   const value = useMemo<LocaleContextValue>(
     () => ({

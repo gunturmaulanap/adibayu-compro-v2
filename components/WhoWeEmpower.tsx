@@ -173,6 +173,7 @@ export default function WhoWeEmpower({
               className="object-cover rounded-2xl"
               sizes="(max-width: 1024px) 100vw, 50vw"
               priority={false}
+              unoptimized
             />
             {isDarkMode && (
               <motion.div

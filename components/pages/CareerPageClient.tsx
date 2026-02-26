@@ -84,26 +84,36 @@ export default function CareerPageClient() {
       jobs: {},
     };
 
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-
-    const savedTheme = window.localStorage.getItem("theme");
-    return (
-      savedTheme === "dark" ||
-      (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)
-    );
-  });
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [themeInitialized, setThemeInitialized] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState(1);
 
   const JOBS_PER_PAGE = 4;
 
   useEffect(() => {
+    const savedTheme = window.localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setIsDarkMode(true);
+      setThemeInitialized(true);
+      return;
+    }
+
+    if (savedTheme === "light") {
+      setIsDarkMode(false);
+      setThemeInitialized(true);
+      return;
+    }
+
+    setIsDarkMode(document.documentElement.classList.contains("dark"));
+    setThemeInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!themeInitialized) return;
     document.documentElement.classList.toggle("dark", isDarkMode);
     window.localStorage.setItem("theme", isDarkMode ? "dark" : "light");
-  }, [isDarkMode]);
+  }, [isDarkMode, themeInitialized]);
 
   const jobs = t.jobs ?? {};
 

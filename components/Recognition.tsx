@@ -414,7 +414,7 @@ export default function Recognition({
 
   return (
     <section
-      id="section-8"
+      id="recognition"
       className={`py-20 md:py-24 transition-colors duration-300 ${
         isDarkMode ? "bg-[#0B0F19]" : "bg-white"
       }`}

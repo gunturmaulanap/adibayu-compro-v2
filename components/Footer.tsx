@@ -1,11 +1,16 @@
 "use client";
 
+import { useEffect, type MouseEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import logoDarkMode from "./assets/logos/dark-mode.png";
 import logoLightMode from "./assets/logos/light-mode.png";
 import { Linkedin, Instagram, Mail, Phone } from "lucide-react";
-import { useValueChainNavigation } from "@/lib/useValueChainNavigation";
+import {
+  setActivePillar,
+  useValueChainNavigation,
+} from "@/lib/useValueChainNavigation";
 import type { Locale } from "@/lib/i18n";
 import { copy } from "@/lib/translations";
 
@@ -25,6 +30,12 @@ type LinkColumnProps = {
   isDarkMode: boolean;
   businessTitle: string;
   valueEcosystemLabel: string;
+  onLinkClick: (
+    event: MouseEvent<HTMLAnchorElement>,
+    link: FooterLink,
+    index: number,
+    title: string,
+  ) => void;
 };
 
 function LinkColumn({
@@ -33,15 +44,8 @@ function LinkColumn({
   isDarkMode,
   businessTitle,
   valueEcosystemLabel,
+  onLinkClick,
 }: LinkColumnProps) {
-  const { navigateToPillar } = useValueChainNavigation();
-
-  const handleClick = (index: number) => {
-    const pillarId =
-      index === 0 ? "manufacturing" : index === 1 ? "distribution" : "retail";
-    navigateToPillar(pillarId);
-  };
-
   return (
     <div>
       <h3
@@ -55,8 +59,9 @@ function LinkColumn({
         {links.map((link, index) => (
           <li key={`${link.href}-${index}`}>
             {title === businessTitle && link.label !== valueEcosystemLabel ? (
-              <button
-                onClick={() => handleClick(index)}
+              <Link
+                href={link.href}
+                onClick={(event) => onLinkClick(event, link, index, title)}
                 className={`text-sm transition-colors duration-200 hover:underline underline-offset-2 text-left w-full ${
                   isDarkMode
                     ? "text-neutral-400 hover:text-neutral-200"
@@ -64,10 +69,11 @@ function LinkColumn({
                 }`}
               >
                 {link.label}
-              </button>
+              </Link>
             ) : (
               <Link
                 href={link.href}
+                onClick={(event) => onLinkClick(event, link, index, title)}
                 className={`text-sm transition-colors duration-200 hover:underline underline-offset-2 ${
                   isDarkMode
                     ? "text-neutral-400 hover:text-neutral-200"
@@ -87,6 +93,9 @@ function LinkColumn({
 export default function Footer({ isDarkMode = false, locale }: FooterProps) {
   const currentYear = new Date().getFullYear();
   const t = copy[locale]?.home?.footer ?? copy.en.home.footer;
+  const pathname = usePathname();
+  const router = useRouter();
+  const { navigateToPillar } = useValueChainNavigation();
 
   const footerLinks = {
     businesses: [
@@ -96,10 +105,17 @@ export default function Footer({ isDarkMode = false, locale }: FooterProps) {
       { href: "#value-chain", label: t.businessLinks[3] },
     ],
     whoWeAre: [
-      { href: "/who-we-are", label: t.whoLinks[0] },
-      { href: "/who-we-are#vision", label: t.whoLinks[1] },
-      { href: "/who-we-are#leadership", label: t.whoLinks[2] },
-      { href: "/governance", label: t.whoLinks[3] },
+      { href: "/about-us#portfolio", label: t.whoLinks[0] },
+      { href: "/about-us#vision", label: t.whoLinks[1] },
+      { href: "/about-us#values", label: t.whoLinks[2] },
+      { href: "/about-us#leadership", label: t.whoLinks[3] },
+      { href: "/#recognition", label: t.whoLinks[4] },
+      { href: "/career", label: t.whoLinks[5] },
+    ],
+    governance: [
+      { href: "/governance#portfolio", label: t.governanceLinks[0] },
+      { href: "/governance#how-we-govern", label: t.governanceLinks[1] },
+      { href: "/governance#portfolio-structure", label: t.governanceLinks[2] },
     ],
     impact: [
       { href: "#impact", label: t.impactLinks[0] },
@@ -113,6 +129,102 @@ export default function Footer({ isDarkMode = false, locale }: FooterProps) {
       { href: "/cookies", label: t.legalLinks[2] },
     ],
   };
+
+  const scrollToSection = (sectionId: string) => {
+    const section = document.getElementById(sectionId);
+    if (!section) return false;
+
+    const navOffset = window.innerWidth >= 1024 ? 120 : 92;
+    const targetTop =
+      section.getBoundingClientRect().top + window.scrollY - navOffset;
+
+    window.scrollTo({
+      top: Math.max(0, targetTop),
+      behavior: "smooth",
+    });
+
+    return true;
+  };
+
+  const handleSectionNavigation = (targetPath: string, sectionId: string) => {
+    const hash = `#${sectionId}`;
+    const targetUrl = `${targetPath}${hash}`;
+
+    if (pathname !== targetPath) {
+      router.push(targetUrl);
+      return;
+    }
+
+    if (window.location.hash !== hash) {
+      window.history.pushState(null, "", targetUrl);
+    }
+
+    const didScroll = scrollToSection(sectionId);
+    if (!didScroll) {
+      router.push(targetUrl);
+    }
+  };
+
+  const getBusinessPillarByIndex = (index: number) => {
+    if (index === 0) return "manufacturing" as const;
+    if (index === 1) return "distribution" as const;
+    return "retail" as const;
+  };
+
+  const handleFooterLinkClick = (
+    event: MouseEvent<HTMLAnchorElement>,
+    link: FooterLink,
+    index: number,
+    title: string,
+  ) => {
+    const isBusinessPillarLink =
+      title === t.businesses && link.label !== t.businessLinks[3] && index <= 2;
+
+    if (isBusinessPillarLink) {
+      event.preventDefault();
+      const pillarId = getBusinessPillarByIndex(index);
+
+      if (pathname === "/") {
+        navigateToPillar(pillarId);
+      } else {
+        setActivePillar(pillarId);
+        router.push("/#value-chain");
+      }
+      return;
+    }
+
+    if (!link.href.includes("#")) return;
+
+    const [pathPart, hashPart] = link.href.split("#");
+    const sectionId = hashPart?.trim();
+    if (!sectionId) return;
+
+    event.preventDefault();
+
+    const normalizedPath = pathPart?.trim();
+    const targetPath = normalizedPath ? normalizedPath : "/";
+    handleSectionNavigation(targetPath, sectionId);
+  };
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash.startsWith("#")) return;
+
+    const sectionId = hash.slice(1);
+    const run = () => {
+      scrollToSection(sectionId);
+    };
+
+    const rafId = window.requestAnimationFrame(run);
+    const timeoutIds = [120, 260, 420, 700, 1100].map((delay) =>
+      window.setTimeout(run, delay),
+    );
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      timeoutIds.forEach((id) => window.clearTimeout(id));
+    };
+  }, [pathname]);
 
   return (
     <footer
@@ -194,6 +306,7 @@ export default function Footer({ isDarkMode = false, locale }: FooterProps) {
               isDarkMode={isDarkMode}
               businessTitle={t.businesses}
               valueEcosystemLabel={t.businessLinks[3]}
+              onLinkClick={handleFooterLinkClick}
             />
             <LinkColumn
               title={t.whoWeAre}
@@ -201,6 +314,15 @@ export default function Footer({ isDarkMode = false, locale }: FooterProps) {
               isDarkMode={isDarkMode}
               businessTitle={t.businesses}
               valueEcosystemLabel={t.businessLinks[3]}
+              onLinkClick={handleFooterLinkClick}
+            />
+            <LinkColumn
+              title={t.governance}
+              links={footerLinks.governance}
+              isDarkMode={isDarkMode}
+              businessTitle={t.businesses}
+              valueEcosystemLabel={t.businessLinks[3]}
+              onLinkClick={handleFooterLinkClick}
             />
             <LinkColumn
               title={t.impactInsights}
@@ -208,14 +330,15 @@ export default function Footer({ isDarkMode = false, locale }: FooterProps) {
               isDarkMode={isDarkMode}
               businessTitle={t.businesses}
               valueEcosystemLabel={t.businessLinks[3]}
+              onLinkClick={handleFooterLinkClick}
             />
-            <LinkColumn
+            {/* <LinkColumn
               title={t.legal}
               links={footerLinks.legal}
               isDarkMode={isDarkMode}
               businessTitle={t.businesses}
               valueEcosystemLabel={t.businessLinks[3]}
-            />
+            /> */}
           </div>
         </div>
 

@@ -75,12 +75,14 @@ type Copy = {
     footer: {
       businesses: string;
       whoWeAre: string;
+      governance: string;
       impactInsights: string;
       legal: string;
       summary: string;
       rights: string;
       businessLinks: [string, string, string, string];
-      whoLinks: [string, string, string, string];
+      whoLinks: [string, string, string, string, string, string];
+      governanceLinks: [string, string, string];
       impactLinks: [string, string, string, string];
       legalLinks: [string, string, string];
     };
@@ -275,6 +277,7 @@ export const copy: Record<Locale, Copy> = {
       footer: {
         businesses: "Businesses",
         whoWeAre: "Who We Are",
+        governance: "Governance",
         impactInsights: "Impact & News",
         legal: "Legal",
         summary:
@@ -289,8 +292,15 @@ export const copy: Record<Locale, Copy> = {
         whoLinks: [
           "About Adibayu Group",
           "Vision & Mission",
+          "Our Values",
           "Leadership",
-          "Governance",
+          "Rewards & Recognition",
+          "Career",
+        ],
+        governanceLinks: [
+          "Governance Overview",
+          "Governance Principles",
+          "Portfolio Structure",
         ],
         impactLinks: [
           "Why We Exist",
@@ -527,6 +537,7 @@ export const copy: Record<Locale, Copy> = {
       footer: {
         businesses: "Bisnis",
         whoWeAre: "Tentang Kami",
+        governance: "Tata Kelola",
         impactInsights: "Dampak & Berita",
         legal: "Legal",
         summary:
@@ -536,10 +547,22 @@ export const copy: Record<Locale, Copy> = {
         whoLinks: [
           "Tentang Adibayu Group",
           "Visi & Misi",
+          "Nilai Kami",
           "Kepemimpinan",
-          "Tata Kelola",
+          "Penghargaan & Pengakuan",
+          "Karier",
         ],
-        impactLinks: ["Alasan Kami Hadir", "Artikel", "Kemitraan", "Karier"],
+        governanceLinks: [
+          "Gambaran Tata Kelola",
+          "Prinsip Tata Kelola",
+          "Struktur Portofolio",
+        ],
+        impactLinks: [
+          "Alasan Kami Hadir",
+          "Berita dan Pembaruan",
+          "Kemitraan",
+          "Karier",
+        ],
         legalLinks: ["Kebijakan Privasi", "Ketentuan", "Kebijakan Cookie"],
       },
     },

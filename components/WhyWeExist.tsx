@@ -293,6 +293,7 @@ export default function WhyWeExist({
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 priority
+                unoptimized
               />
             </motion.div>
           </motion.div>
