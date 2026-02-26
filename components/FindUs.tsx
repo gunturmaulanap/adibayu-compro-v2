@@ -434,7 +434,7 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
               >
                 <motion.a
                   custom={0}
-                  href={mapsUrl}
+                  href={liveDirectionsUrl ?? mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   variants={findUsVariants.ctaButton(0)}
@@ -459,44 +459,10 @@ export default function FindUs({ isDarkMode = false, locale }: FindUsProps) {
                   {t.openMaps}
                 </motion.a>
 
-                {liveDirectionsUrl && (
-                  <motion.a
-                    custom={1}
-                    href={liveDirectionsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variants={findUsVariants.ctaButton(1)}
-                    className={`inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl border px-5 text-sm font-semibold transition-all duration-200 ${
-                      isDarkMode
-                        ? "border-neutral-700 text-neutral-100 hover:bg-neutral-800"
-                        : "border-neutral-300 text-neutral-900 hover:bg-neutral-50"
-                    }`}
-                    whileHover={{
-                      y: -3,
-                      borderColor: isDarkMode
-                        ? "rgba(255,255,255,0.3)"
-                        : "rgba(0,0,0,0.3)",
-                      transition: {
-                        type: "spring",
-                        stiffness: 250,
-                        damping: 18,
-                      },
-                    }}
-                    whileTap={{
-                      scale: 0.97,
-                    }}
-                  >
-                    <MapPin className="w-4 h-4" />
-                    {locale === "id"
-                      ? "Rute realtime dari lokasi saya"
-                      : "Live directions from my location"}
-                  </motion.a>
-                )}
-
                 <motion.a
-                  custom={2}
+                  custom={1}
                   href={`mailto:${email}`}
-                  variants={findUsVariants.ctaButton(2)}
+                  variants={findUsVariants.ctaButton(1)}
                   className={`inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl border px-5 text-sm font-semibold transition-all duration-200 ${
                     isDarkMode
                       ? "border-neutral-700 text-neutral-100 hover:bg-neutral-800"
