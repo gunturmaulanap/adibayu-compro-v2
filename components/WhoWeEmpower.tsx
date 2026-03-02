@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { Factory, Truck, Store } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
 import { copy } from "@/lib/translations";
+import TiltedCard from "@/components/TiltedCard";
 
 const entities = [
   {
@@ -161,28 +162,24 @@ export default function WhoWeEmpower({
           viewport={{ once: true, amount: 0.1, margin: "0px 0px -10% 0px" }}
         >
           <motion.div
-            className={`relative min-h-[300px] md:min-h-[420px] w-full overflow-hidden border rounded-2xl ${
-              isDarkMode ? "border-white/15" : "border-gray-200"
+            className={`relative min-h-[300px] md:min-h-[420px] w-full overflow-hidden  rounded-2xl ${
+              isDarkMode ? "border-white/0" : "border-gray-200"
             }`}
             variants={whoWeEmpowerVariants.leftImage}
           >
-            <Image
-              src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80"
-              alt="Modern corporate headquarters building"
-              fill
-              className="object-cover rounded-2xl"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              priority={false}
-              unoptimized
+            <TiltedCard
+              imageSrc="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80"
+              altText="Modern corporate headquarters building"
+              captionText="Adibayu Group"
+              containerHeight="100%"
+              containerWidth="100%"
+              imageHeight="100%"
+              imageWidth="100%"
+              rotateAmplitude={10}
+              scaleOnHover={1.03}
+              showMobileWarning={false}
+              showTooltip
             />
-            {isDarkMode && (
-              <motion.div
-                className="absolute inset-0 bg-black/30"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              />
-            )}
           </motion.div>
 
           <motion.div

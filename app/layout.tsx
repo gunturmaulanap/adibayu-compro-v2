@@ -38,8 +38,8 @@ export default function RootLayout({
                 try {
                   var theme = localStorage.getItem('theme');
                   if (!theme) {
-                    localStorage.setItem('theme', 'light');
-                    theme = 'light';
+                    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                    localStorage.setItem('theme', theme);
                   }
                   document.documentElement.classList.toggle('dark', theme === 'dark');
 

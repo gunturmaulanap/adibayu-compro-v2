@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
+const SESSION_MAX_AGE_SECONDS = 60 * 60 * 8; // 8 hours
+
 export async function signInAction(formData: FormData) {
   const email = String(formData.get("email") || "").trim();
   const password = String(formData.get("password") || "").trim();
@@ -19,6 +21,13 @@ export async function signInAction(formData: FormData) {
       path: "/",
       httpOnly: true,
       sameSite: "lax",
+      maxAge: SESSION_MAX_AGE_SECONDS,
+    });
+    cookieStore.set("admin_session_started_at", String(Date.now()), {
+      path: "/",
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: SESSION_MAX_AGE_SECONDS,
     });
     redirect("/admin");
   }
@@ -37,6 +46,14 @@ export async function signInAction(formData: FormData) {
     redirect(`/login?error=${encodeURIComponent(error.message)}`);
   }
 
+  const cookieStore = await cookies();
+  cookieStore.set("admin_session_started_at", String(Date.now()), {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: SESSION_MAX_AGE_SECONDS,
+  });
+
   redirect("/admin");
 }
 
@@ -48,6 +65,7 @@ export async function signOutAction() {
 
   const cookieStore = await cookies();
   cookieStore.delete("mock_auth");
+  cookieStore.delete("admin_session_started_at");
 
   redirect("/login");
 }
